@@ -22,6 +22,7 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: '/tasks-search/page/:id',
+        name: "TaskResult",
         component: () => import('@/views/TasksSearch.vue'),
       }
     ]

@@ -48,9 +48,14 @@
 
       <div class="pagination">
         <a href="#" v-text="'Previous'"></a>
-        <a href="#" v-for="data in 3" :key="data">
+
+        <router-link
+          v-for="data in 3"
+          :key="data"
+          :to="{ name: 'TaskResult', params: { id: data } }"
+        >
           {{ data }}
-        </a>
+        </router-link>
         <a href="#" v-text="'Next'"></a>
       </div>
     </div>
@@ -58,7 +63,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, computed } from "vue";
+  import { defineComponent, onMounted } from "vue";
 
   import useTaskSearch from "@/components/task-search/tasks-search";
 
@@ -66,7 +71,7 @@
     name: "TasksSearch",
 
     setup() {
-      const { getTasks, tasks, formatBudget, router } = useTaskSearch();
+      const { getTasks, tasks, formatBudget } = useTaskSearch();
 
       onMounted(() => {
         getTasks();
