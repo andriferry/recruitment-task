@@ -22,9 +22,9 @@ export default function useTaskSearch() {
     })
     }
   
-  const formatBudget = (value :number , currency: string, location:string) => {
-      let numberObject = new Number(value);
-      let myObj = {
+  const formatBudget = (value: number ,currency: string,location: string) => {
+      const numberObject = new Number(value);
+      const myObj = {
         style: "currency",
         currency: currency
       };

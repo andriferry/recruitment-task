@@ -18,17 +18,15 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       requiresAuth: true,
       requiresUnauth: false
-    }
+    },
+    children: [
+      {
+        path: '/tasks-search/page/:id',
+        component: () => import('@/views/TasksSearch.vue'),
+      }
+    ]
   },
-  // {
-  //   path: '/tasks-search/page/:id',
-  //   name: 'TasksSearch',
-  //   component: () => import('@/views/TasksSearch.vue'),
-  //   meta: {
-  //     requiresAuth: true,
-  //     requiresUnauth: false
-  //   }
-  // }
+
 ]
 
 const router = createRouter({
