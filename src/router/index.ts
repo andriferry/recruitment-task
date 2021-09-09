@@ -19,7 +19,16 @@ const routes: Array<RouteRecordRaw> = [
       requiresAuth: true,
       requiresUnauth: false
     }
-  }
+  },
+  // {
+  //   path: '/tasks-search/page/:id',
+  //   name: 'TasksSearch',
+  //   component: () => import('@/views/TasksSearch.vue'),
+  //   meta: {
+  //     requiresAuth: true,
+  //     requiresUnauth: false
+  //   }
+  // }
 ]
 
 const router = createRouter({

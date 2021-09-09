@@ -22,13 +22,17 @@
           <th>
             Platform
           </th>
+
+          <th>
+            Added Time
+          </th>
         </tr>
 
         <tr v-for="(data, index) in tasks" :key="index">
           <td v-text="data.title"></td>
           <td v-text="data.description"></td>
           <td>
-            {{ toUsd(data.budget.value) }}
+            {{ formatBudget(data.budget.value, data.budget.currency, "en-US") }}
           </td>
           <td v-text="data.proposalCount"></td>
           <td>
@@ -38,6 +42,7 @@
               </li>
             </ul>
           </td>
+          <td v-text="data.addedTime"></td>
         </tr>
       </table>
 
@@ -53,7 +58,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted } from "vue";
+  import { defineComponent, onMounted, computed } from "vue";
 
   import useTaskSearch from "@/components/task-search/tasks-search";
 
@@ -61,12 +66,13 @@
     name: "TasksSearch",
 
     setup() {
-      const { getTasks, tasks, toUsd } = useTaskSearch();
+      const { getTasks, tasks, formatBudget, router } = useTaskSearch();
+
       onMounted(() => {
         getTasks();
       });
 
-      return { tasks, toUsd };
+      return { tasks, formatBudget };
     },
   });
 </script>
