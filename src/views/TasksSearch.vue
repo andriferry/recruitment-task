@@ -2,10 +2,11 @@
   <main>
     <h1>Tasks Search view</h1>
 
-    <div class="container">
+    <div class="container" v-if="tasks">
       <div class="search">
         <input type="text" />
       </div>
+
       <table class="tasks">
         <tr>
           <th>Title</th>
@@ -23,29 +24,29 @@
           </th>
         </tr>
 
-        <tr v-for="data in 6" :key="data">
-          <td>Title</td>
+        <tr v-for="(data, index) in tasks" :key="index">
+          <td v-text="data.title"></td>
+          <td v-text="data.description"></td>
           <td>
-            Description
+            {{ toUsd(data.budget.value) }}
           </td>
+          <td v-text="data.proposalCount"></td>
           <td>
-            Budget
-          </td>
-          <td>
-            Propsal Count
-          </td>
-          <td>
-            Platform
+            <ul>
+              <li v-for="(platforms, index) in data.platforms" :key="index">
+                {{ platforms }}
+              </li>
+            </ul>
           </td>
         </tr>
       </table>
 
       <div class="pagination">
-        <a href="#">Previous</a>
+        <a href="#" v-text="'Previous'"></a>
         <a href="#" v-for="data in 3" :key="data">
           {{ data }}
         </a>
-        <a href="#">Next</a>
+        <a href="#" v-text="'Next'"></a>
       </div>
     </div>
   </main>
@@ -60,20 +61,13 @@
     name: "TasksSearch",
 
     setup() {
-      const Task = useTaskSearch();
+      const { getTasks, tasks, toUsd } = useTaskSearch();
       onMounted(() => {
-        Task.getTasks().then((res) => {
-          console.log(res);
-        });
+        getTasks();
       });
 
-      return {};
+      return { tasks, toUsd };
     },
-
-    // {
-    // params: {
-    //   ID: 12345
-    // }
   });
 </script>
 
