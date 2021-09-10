@@ -7,28 +7,40 @@ import api from "@/services/api";
 
 export default function useTaskSearch() {
 
-    const router = useRouter()
+  const router = useRouter()
 
-    const allTasks = ref()
+  const allTasks = ref()
 
-    const tasks = ref()
+  const tasks = ref()
+  
+  const allPlatform = ref()
 
-    const parameter = reactive<params>({
-      limit: 10,
-      platforms: "INSTAGRAM"
-    })
+  const parameter = reactive<params>({
+    limit: 10
+  });
+  
+  const removeDuplicatePlatform = (platform: [string]) => {
+    allPlatform.value = ['All',...new Set(platform)]
+  }
   
   
-    const pagination = (start: number ,end: number) => {
-      tasks.value = allTasks.value.slice(start,end)
-    } 
+  const getPlatform = () => {
+    const getDataPlatform = tasks.value.map((element: any) => element.platforms.flat())
+    removeDuplicatePlatform(getDataPlatform.flat())
+
+  }
+
+  const pagination = (start: number ,end: number) => {
+    tasks.value = allTasks.value.slice(start,end)
+  } 
   
   
     
-    const getTasks = () => {
-      api.get("tasks", {params: parameter}).then(res => {
-        allTasks.value = res.data.tasks
-        pagination(0,6) // First slice to show 6 data 
+  const getTasks = () => {
+    api.get("tasks", {params: parameter}).then(res => {
+      allTasks.value = res.data.tasks
+      pagination(0,6) // First slice to show 6 data 
+      getPlatform()
     })
     }
   
@@ -48,6 +60,7 @@ export default function useTaskSearch() {
     formatBudget,
     router,
     allTasks,
-    pagination
+    pagination,
+    allPlatform
   }
 }

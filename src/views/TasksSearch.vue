@@ -5,11 +5,22 @@
     <div class="container" v-if="tasks">
       <div class="search">
         <div class="input">
-          <label for="">Sort Budget By</label>
+          <label for="">Sort Budget</label>
           <select name="" id="">
             <option value="" selected>Selected</option>
             <option value="min">Min</option>
             <option value="max">Max</option>
+          </select>
+        </div>
+        <div class="input">
+          <label for="">Platform</label>
+          <select name="" id="">
+            <option
+              v-for="(platform, index) in allPlatform"
+              :key="index"
+              v-text="platform"
+              :value="createdPlatformValue(platform)"
+            ></option>
           </select>
         </div>
         <div class="input">
@@ -103,6 +114,7 @@
         formatBudget,
         allTasks,
         pagination,
+        allPlatform,
       } = useTaskSearch();
 
       const table = ref([
@@ -114,11 +126,23 @@
         "Added Time",
       ]);
 
+      const createdPlatformValue = (platformValue: string) => {
+        return platformValue.toLowerCase();
+      };
+
       onMounted(() => {
         getTasks();
       });
 
-      return { formatBudget, table, tasks, allTasks, pagination };
+      return {
+        formatBudget,
+        table,
+        tasks,
+        allTasks,
+        pagination,
+        allPlatform,
+        createdPlatformValue,
+      };
     },
   });
 </script>
