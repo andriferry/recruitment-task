@@ -2,9 +2,7 @@
   <main>
     <h1>Tasks Search view</h1>
 
-    {{ $route.params }}
-
-    <div class="container" v-if="dataTasks">
+    <div class="container" v-if="componentTask.task">
       <div class="search">
         <div class="input">
           <label for="">Sort Budget</label>
@@ -18,7 +16,7 @@
           <label for="">Platform</label>
           <select v-model="selected" name="" id="">
             <option
-              v-for="(platform, index) in allPlatform"
+              v-for="(platform, index) in componentTask.allPlatform"
               :key="index"
               v-text="platform"
               :value="createdPlatformValue(platform)"
@@ -31,8 +29,6 @@
         </div>
       </div>
 
-      {{ tasks.length }}
-
       <table class="tasks">
         <tr>
           <th v-for="(dataTable, index) in table" :key="index">
@@ -40,7 +36,7 @@
           </th>
         </tr>
 
-        <tr v-for="(data, index) in dataTasks" :key="index">
+        <tr v-for="(data, index) in dataTask" :key="index">
           <td v-text="data.title"></td>
           <td v-text="data.description"></td>
           <td>
@@ -80,7 +76,7 @@
           </th>
         </tr>
 
-        <tr v-for="(data, index) in allTasks" :key="index">
+        <tr v-for="(data, index) in componentTask.allTasks" :key="index">
           <td v-text="data.title"></td>
           <td v-text="data.description"></td>
           <td>
@@ -113,12 +109,13 @@
 
     setup() {
       const {
+        componentTask,
         getTasks,
-        tasks,
+        dataTask,
+        selected,
         formatBudget,
-        allTasks,
         pagination,
-        allPlatform,
+        createdPlatformValue,
       } = useTaskSearch();
 
       const route = useRoute();
@@ -131,19 +128,6 @@
         "Platform",
         "Added Time",
       ]);
-
-      const selected = ref("all");
-
-      const onedata = ref();
-
-      const createdPlatformValue = (platformValue: string) =>
-        platformValue.toLowerCase();
-
-      const dataTasks = computed(() =>
-        typeof onedata.value == "undefined" ? tasks.value : onedata.value
-      );
-
-
 
       watch(
         // Every access with <routerlink>
@@ -163,39 +147,18 @@
         }
       );
 
-      watch(selected, (platform: any) => {
-        const array: any[] = [];
-        if (platform !== "all") {
-          tasks.value.forEach((element: any, index: number) => {
-            const get = element.platforms.filter(
-              (data: any) => data.toLowerCase() == platform
-            );
-
-            if (get.length > 0) {
-              array.push(tasks.value[index]);
-            }
-          });
-          // calling to sortplatforms
-          onedata.value = array;
-        } else {
-          onedata.value = undefined;
-        }
-      });
-
       onMounted(() => {
         getTasks();
       });
 
       return {
         formatBudget,
-        selected,
         table,
-        tasks,
-        allTasks,
+        dataTask,
+        selected,
+        componentTask,
         pagination,
-        allPlatform,
         createdPlatformValue,
-        dataTasks,
       };
     },
   });
