@@ -6,15 +6,15 @@
       <div class="search">
         <div class="input">
           <label for="">Sort Budget</label>
-          <select name="" id="">
-            <option value="" selected>Selected</option>
+          <select v-model="selectedBudget" name="" id="">
+            <option value="selected">Selected</option>
             <option value="min">Min</option>
             <option value="max">Max</option>
           </select>
         </div>
         <div class="input">
           <label for="">Platform</label>
-          <select v-model="selected" name="" id="">
+          <select v-model="selectedPlatform" name="" id="">
             <option
               v-for="(platform, index) in componentTask.allPlatform"
               :key="index"
@@ -98,7 +98,7 @@
 </template>
 
 <script lang="ts">
-  import { computed, defineComponent, onMounted, ref, watch } from "vue";
+  import { defineComponent, onMounted, ref, watch } from "vue";
   import { useRoute } from "vue-router";
 
   import useTaskSearch from "@/components/task-search/tasks-search";
@@ -111,8 +111,9 @@
       const {
         componentTask,
         getTasks,
+        selectedBudget,
         dataTask,
-        selected,
+        selectedPlatform,
         formatBudget,
         pagination,
         createdPlatformValue,
@@ -155,10 +156,11 @@
         formatBudget,
         table,
         dataTask,
-        selected,
+        selectedPlatform,
         componentTask,
         pagination,
         createdPlatformValue,
+        selectedBudget,
       };
     },
   });

@@ -17,7 +17,9 @@ export default function useTaskSearch() {
     allTasks: undefined
   })
 
-  const selected = ref<string>("all")
+  const selectedPlatform = ref<string>("all")
+
+  const selectedBudget = ref<string>("selected")
 
   const parameter = reactive<params>({
     limit: 10
@@ -32,23 +34,44 @@ export default function useTaskSearch() {
   }
   
   const sortPlatform = (platform: string) => {
-    const array: any[] = []
+    const array: string[] = []
     componentTask.task.forEach((element: any, index: number) => {
-      const matchPlatform = element.platforms.filter((data: any) => data.toLowerCase() == platform)
+      
+      const matchPlatform = element.platforms.filter((data: string) => data.toLowerCase() == platform)
    
       if (matchPlatform.length > 0) array.push(componentTask.task[index])
     })
 
     componentTask.sortData = array
-
-    
   }
 
-   watch(selected, (platform: string) => {
+  const sortBudget = (budget: string) => {
+    if (budget == "max") {
+      console.log(typeof componentTask.sortData)
+      componentTask.task.sort((a: any,b: any) => (a.budget.value < b.budget.value) ? 1 : ((b.budget.value < a.budget.value) ? -1 : 0))
+    } else {
+      componentTask.task.sort((a: any,b: any) => (a.budget.value > b.budget.value) ? 1 : ((b.budget.value > a.budget.value) ? -1 : 0))
+    }  
+  }
+
+  const pagination = (start: number ,end?: number) => {
+    componentTask.task  = componentTask.allTasks.slice(start, end)
+  }
+  
+  watch(selectedPlatform, (platform: string) => {
     if (platform !== "all") {
       sortPlatform(platform)
     } else {
-      componentTask.sortData = undefined
+      //componentTask.sortData = undefined
+      pagination(0, 6)
+    }
+  })
+
+  watch(selectedBudget, (budget: string) => {
+    if (budget !== "selected") {
+      sortBudget(budget)
+    } else {
+      pagination(0, 6)
     }
   })
 
@@ -59,9 +82,6 @@ export default function useTaskSearch() {
 
   }
 
-  const pagination = (start: number ,end?: number) => {
-    componentTask.task  = componentTask.allTasks.slice(start, end)
-  }
   
   
     
@@ -74,8 +94,8 @@ export default function useTaskSearch() {
   }
 
 
-   const createdPlatformValue = (platformValue: string) =>
-        platformValue.toLowerCase();
+   const createdPlatformValue = (platformValue: string) => platformValue.toLowerCase();
+       
   
     const formatBudget = (value: number ,currency: string,location: string) => {
       const numberObject = new Number(value);
@@ -89,13 +109,13 @@ export default function useTaskSearch() {
  
   return {
     componentTask,
-    selected,
+    selectedPlatform,
     getTasks,
     dataTask,
     createdPlatformValue,
     formatBudget,
     router,
     pagination,
-   
+   selectedBudget
   }
 }
