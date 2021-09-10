@@ -14,7 +14,7 @@
         </div>
         <div class="input">
           <label for="">Platform</label>
-          <select name="" id="">
+          <select v-model="selected" name="" id="">
             <option
               v-for="(platform, index) in allPlatform"
               :key="index"
@@ -100,7 +100,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref } from "vue";
+  import { defineComponent, onMounted, ref, watch } from "vue";
 
   import useTaskSearch from "@/components/task-search/tasks-search";
 
@@ -126,9 +126,14 @@
         "Added Time",
       ]);
 
-      const createdPlatformValue = (platformValue: string) => {
-        return platformValue.toLowerCase();
-      };
+      const selected = ref("all");
+
+      const createdPlatformValue = (platformValue: string) =>
+        platformValue.toLowerCase();
+
+      watch(selected, (value: string) => {
+        console.log(value);
+      });
 
       onMounted(() => {
         getTasks();
@@ -136,6 +141,7 @@
 
       return {
         formatBudget,
+        selected,
         table,
         tasks,
         allTasks,
