@@ -2,6 +2,8 @@
   <main>
     <h1>Tasks Search view</h1>
 
+    {{ $route.params }}
+
     <div class="container" v-if="tasks">
       <div class="search">
         <div class="input">
@@ -101,8 +103,10 @@
 
 <script lang="ts">
   import { defineComponent, onMounted, ref, watch } from "vue";
+  import { useRoute } from "vue-router";
 
   import useTaskSearch from "@/components/task-search/tasks-search";
+  import router from "@/router";
 
   export default defineComponent({
     name: "TasksSearch",
@@ -116,6 +120,8 @@
         pagination,
         allPlatform,
       } = useTaskSearch();
+
+      const route = useRoute();
 
       const table = ref([
         "Title",
@@ -131,12 +137,28 @@
       const createdPlatformValue = (platformValue: string) =>
         platformValue.toLowerCase();
 
-      watch(selected, (value: string) => {
-        console.log(value);
-      });
+      watch(
+        // Every access with <routerlink>
+        () => route.params.id,
+        (newId) => {
+          switch (newId) {
+            case "1":
+              pagination(0, 6);
+              break;
+            case "2":
+              pagination(6, 9);
+              break;
+            case "":
+              pagination(10);
+              break;
+          }
+        }
+      );
 
       onMounted(() => {
         getTasks();
+
+        //let id = router.currentRoute.value.params.id;
       });
 
       return {

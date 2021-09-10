@@ -30,7 +30,7 @@ export default function useTaskSearch() {
 
   }
 
-  const pagination = (start: number ,end: number) => {
+  const pagination = (start: number ,end?: number) => {
     tasks.value = allTasks.value.slice(start,end)
   } 
   

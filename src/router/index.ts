@@ -24,7 +24,9 @@ const routes: Array<RouteRecordRaw> = [
         path: '/tasks-search/page/:id',
         name: "TaskResult",
         component: () => import('@/views/TasksSearch.vue'),
-      }
+     
+      },
+      
     ]
   },
 
