@@ -45,25 +45,48 @@ export default function useTaskSearch() {
     componentTask.sortData = array
   }
 
+
+  const sortMaxBudget = () => {
+    if (typeof componentTask.sortData == "undefined") {
+       componentTask.task.sort((a: any,b: any) => (a.budget.value < b.budget.value) ? 1 : ((b.budget.value < a.budget.value) ? -1 : 0))
+    } else {
+       componentTask.sortData.sort((a: any,b: any) => (a.budget.value < b.budget.value) ? 1 : ((b.budget.value < a.budget.value) ? -1 : 0))
+    }
+  }
+  
+  const sortMinBudget = () => {
+    if (typeof componentTask.sortData == "undefined") {
+       componentTask.task.sort((a: any,b: any) => (a.budget.value > b.budget.value) ? 1 : ((b.budget.value > a.budget.value) ? -1 : 0))
+    } else {
+       componentTask.sortData.sort((a: any,b: any) => (a.budget.value > b.budget.value) ? 1 : ((b.budget.value > a.budget.value) ? -1 : 0))
+    }
+  } 
+
   const sortBudget = (budget: string) => {
     if (budget == "max") {
-      console.log(typeof componentTask.sortData)
-      componentTask.task.sort((a: any,b: any) => (a.budget.value < b.budget.value) ? 1 : ((b.budget.value < a.budget.value) ? -1 : 0))
+      sortMaxBudget()
     } else {
-      componentTask.task.sort((a: any,b: any) => (a.budget.value > b.budget.value) ? 1 : ((b.budget.value > a.budget.value) ? -1 : 0))
+      sortMinBudget()
     }  
   }
 
   const pagination = (start: number ,end?: number) => {
-    componentTask.task  = componentTask.allTasks.slice(start, end)
+
+    if (typeof componentTask.sortData == "undefined") {
+      componentTask.task  = componentTask.allTasks.slice(start, end)
+    } else { // There's Error
+      componentTask.sortData  = componentTask.allTasks.slice(start, end)
+    }
+
+    
   }
   
   watch(selectedPlatform, (platform: string) => {
     if (platform !== "all") {
       sortPlatform(platform)
     } else {
-      //componentTask.sortData = undefined
-      pagination(0, 6)
+      componentTask.sortData = undefined
+     // pagination(0, 6)
     }
   })
 
