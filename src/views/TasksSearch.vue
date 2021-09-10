@@ -44,6 +44,32 @@
         </router-link>
         <a href="#" v-text="'Next'"></a>
       </div>
+
+      this is all data
+      <table class="tasks" style="margin-top: 10px">
+        <tr>
+          <th v-for="(dataTable, index) in table" :key="index">
+            {{ dataTable }}
+          </th>
+        </tr>
+
+        <tr v-for="(data, index) in allTasks" :key="index">
+          <td v-text="data.title"></td>
+          <td v-text="data.description"></td>
+          <td>
+            {{ formatBudget(data.budget.value, data.budget.currency, "en-US") }}
+          </td>
+          <td v-text="data.proposalCount"></td>
+          <td>
+            <ul>
+              <li v-for="(platforms, index) in data.platforms" :key="index">
+                {{ platforms }}
+              </li>
+            </ul>
+          </td>
+          <td v-text="data.addedTime"></td>
+        </tr>
+      </table>
     </div>
   </main>
 </template>
@@ -57,7 +83,7 @@
     name: "TasksSearch",
 
     setup() {
-      const { getTasks, tasks, data, formatBudget } = useTaskSearch();
+      const { getTasks, tasks, formatBudget, allTasks } = useTaskSearch();
 
       const table = ref([
         "Title",
@@ -72,7 +98,7 @@
         getTasks();
       });
 
-      return { tasks, formatBudget, data, table };
+      return { formatBudget, table, tasks, allTasks };
     },
   });
 </script>
