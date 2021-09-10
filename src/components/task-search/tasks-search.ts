@@ -19,8 +19,8 @@ export default function useTaskSearch() {
     })
   
   
-    const pagination = (paginate: number) => {
-      tasks.value = allTasks.value.slice(0,paginate)
+    const pagination = (start: number ,end: number) => {
+      tasks.value = allTasks.value.slice(start,end)
     } 
   
   
@@ -28,7 +28,7 @@ export default function useTaskSearch() {
     const getTasks = () => {
       api.get("tasks", {params: parameter}).then(res => {
         allTasks.value = res.data.tasks
-        pagination(6)
+        pagination(0,6) // First slice to show 6 data 
     })
     }
   
@@ -47,6 +47,7 @@ export default function useTaskSearch() {
     tasks,
     formatBudget,
     router,
-    allTasks
+    allTasks,
+    pagination
   }
 }

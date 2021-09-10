@@ -4,8 +4,21 @@
 
     <div class="container" v-if="tasks">
       <div class="search">
-        <input type="text" />
+        <div class="input">
+          <label for="">Sort Budget By</label>
+          <select name="" id="">
+            <option value="" selected>Selected</option>
+            <option value="min">Min</option>
+            <option value="max">Max</option>
+          </select>
+        </div>
+        <div class="input">
+          <label for="">Search</label>
+          <input type="text" />
+        </div>
       </div>
+
+      {{ tasks.length }}
 
       <table class="tasks">
         <tr>
@@ -39,6 +52,7 @@
           v-for="data in 3"
           :key="data"
           :to="{ name: 'TaskResult', params: { id: data } }"
+          @click="pagination(tasks.length, tasks.length + 3)"
         >
           {{ data }}
         </router-link>
@@ -83,7 +97,13 @@
     name: "TasksSearch",
 
     setup() {
-      const { getTasks, tasks, formatBudget, allTasks } = useTaskSearch();
+      const {
+        getTasks,
+        tasks,
+        formatBudget,
+        allTasks,
+        pagination,
+      } = useTaskSearch();
 
       const table = ref([
         "Title",
@@ -98,7 +118,7 @@
         getTasks();
       });
 
-      return { formatBudget, table, tasks, allTasks };
+      return { formatBudget, table, tasks, allTasks, pagination };
     },
   });
 </script>
@@ -133,6 +153,12 @@
       padding: 15px 5px;
       a {
         margin: 0px 5px;
+      }
+      .input {
+        margin: 0px 5px;
+        label {
+          margin-right: 5px;
+        }
       }
     }
   }
