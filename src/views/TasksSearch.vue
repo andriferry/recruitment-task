@@ -4,7 +4,7 @@
 
     {{ $route.params }}
 
-    <div class="container" v-if="tasks">
+    <div class="container" v-if="dataTasks">
       <div class="search">
         <div class="input">
           <label for="">Sort Budget</label>
@@ -40,7 +40,7 @@
           </th>
         </tr>
 
-        <tr v-for="(data, index) in tasks" :key="index">
+        <tr v-for="(data, index) in dataTasks" :key="index">
           <td v-text="data.title"></td>
           <td v-text="data.description"></td>
           <td>
@@ -102,11 +102,11 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref, watch } from "vue";
+  import { computed, defineComponent, onMounted, ref, watch } from "vue";
   import { useRoute } from "vue-router";
 
   import useTaskSearch from "@/components/task-search/tasks-search";
-  import router from "@/router";
+  //import router from "@/router";
 
   export default defineComponent({
     name: "TasksSearch",
@@ -134,8 +134,18 @@
 
       const selected = ref("all");
 
+      const onedata = ref();
+
       const createdPlatformValue = (platformValue: string) =>
         platformValue.toLowerCase();
+
+      const dataTasks = computed(() =>
+        typeof onedata.value == "undefined" ? tasks.value : onedata.value
+      );
+
+      // const sortPlatforms = (platform: any[]) => {
+      //   onedata.value = platform;
+      // };
 
       watch(
         // Every access with <routerlink>
@@ -155,10 +165,27 @@
         }
       );
 
+      watch(selected, (platform: any) => {
+        const array: any[] = [];
+        if (platform !== "all") {
+          tasks.value.forEach((element: any, index: number) => {
+            const get = element.platforms.filter(
+              (data: any) => data.toLowerCase() == platform
+            );
+
+            if (get.length > 0) {
+              array.push(tasks.value[index]);
+            }
+          });
+
+          onedata.value = array;
+        } else {
+          onedata.value = undefined;
+        }
+      });
+
       onMounted(() => {
         getTasks();
-
-        //let id = router.currentRoute.value.params.id;
       });
 
       return {
@@ -170,6 +197,7 @@
         pagination,
         allPlatform,
         createdPlatformValue,
+        dataTasks,
       };
     },
   });
