@@ -143,9 +143,7 @@
         typeof onedata.value == "undefined" ? tasks.value : onedata.value
       );
 
-      // const sortPlatforms = (platform: any[]) => {
-      //   onedata.value = platform;
-      // };
+
 
       watch(
         // Every access with <routerlink>
@@ -177,7 +175,7 @@
               array.push(tasks.value[index]);
             }
           });
-
+          // calling to sortplatforms
           onedata.value = array;
         } else {
           onedata.value = undefined;
