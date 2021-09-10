@@ -1,4 +1,4 @@
-import { reactive, ref } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import {  params } from '@/models/search-tasks.model'
 import api from "@/services/api";
@@ -15,6 +15,11 @@ export default function useTaskSearch() {
       limit: 6,
       platforms: "INSTAGRAM"
     })
+  
+  const data = computed(() => {
+       return tasks.value
+    
+  })
     
     const getTasks = () => {
       api.get("tasks", {params: parameter}).then(res => {
@@ -36,6 +41,7 @@ export default function useTaskSearch() {
     getTasks,
     tasks,
     formatBudget,
-    router
+    router,
+    data
   }
 }

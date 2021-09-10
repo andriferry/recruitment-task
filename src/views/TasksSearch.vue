@@ -9,22 +9,8 @@
 
       <table class="tasks">
         <tr>
-          <th>Title</th>
-          <th>
-            Description
-          </th>
-          <th>
-            Budget
-          </th>
-          <th>
-            Propsal Count
-          </th>
-          <th>
-            Platform
-          </th>
-
-          <th>
-            Added Time
+          <th v-for="(dataTable, index) in table" :key="index">
+            {{ dataTable }}
           </th>
         </tr>
 
@@ -63,7 +49,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted } from "vue";
+  import { defineComponent, onMounted, ref } from "vue";
 
   import useTaskSearch from "@/components/task-search/tasks-search";
 
@@ -71,13 +57,22 @@
     name: "TasksSearch",
 
     setup() {
-      const { getTasks, tasks, formatBudget } = useTaskSearch();
+      const { getTasks, tasks, data, formatBudget } = useTaskSearch();
+
+      const table = ref([
+        "Title",
+        "Description",
+        "Budget",
+        "Proposal Count",
+        "Platform",
+        "Added Time",
+      ]);
 
       onMounted(() => {
         getTasks();
       });
 
-      return { tasks, formatBudget };
+      return { tasks, formatBudget, data, table };
     },
   });
 </script>
