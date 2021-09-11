@@ -1,4 +1,4 @@
-import { reactive, computed, watch, ref } from 'vue'
+import { reactive, computed, watch, ref , onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import {  params , allDataComponent } from '@/models/search-tasks.model'
 import api from "@/services/api";
@@ -49,9 +49,6 @@ export default function useTaskSearch() {
     componentTask.sortData = array
   }
 
-
-
-
   const sortMaxBudget = () => {
     if (typeof componentTask.sortData == "undefined") {
        componentTask.task.sort((a: any,b: any) => (a.budget.value < b.budget.value) ? 1 : ((b.budget.value < a.budget.value) ? -1 : 0))
@@ -86,7 +83,26 @@ export default function useTaskSearch() {
 
     
   }
-  
+  const selectBudget = () => {
+        router.push({
+          path: router.currentRoute.value.fullPath,
+          query: {
+            budget: selectedBudget.value,
+            platform: selectedPlatform.value,
+          },
+        });
+  };
+
+  const selectPlatforms = () => {
+        router.push({
+          path: router.currentRoute.value.fullPath,
+          query: {
+            platform: selectedPlatform.value,
+            budget: selectedBudget.value,
+          },
+        });
+  };
+
   watch(selectedPlatform, (platform: string) => {
     if (platform !== "all") {
       sortPlatform(platform)
@@ -98,6 +114,24 @@ export default function useTaskSearch() {
   watch(selectedBudget, (budget: string) => {
     if (budget !== "selected")  sortBudget(budget)
   })
+
+  // watch(
+  //       // Every access with <routerlink>
+  //       () => route.params.id,
+  //       (newId) => {
+  //         switch (newId) {
+  //           case "1":
+  //             pagination(0, 6);
+  //             break;
+  //           case "2":
+  //             pagination(6, 9);
+  //             break;
+  //           case "":
+  //             pagination(10);
+  //             break;
+  //         }
+  //       }
+  // );
 
   const getPlatform = () => {
     const getDataPlatform = componentTask.task.map((element: any) => element.platforms.flat())
@@ -119,7 +153,11 @@ export default function useTaskSearch() {
 
 
    const createdPlatformValue = (platformValue: string) => platformValue.toLowerCase();
-       
+    
+  
+  onMounted(() => {
+    getTasks()
+  })
   
     const formatBudget = (value: number ,currency: string,location: string) => {
       const numberObject = new Number(value);
@@ -134,14 +172,17 @@ export default function useTaskSearch() {
   return {
     componentTask,
     selectedPlatform,
-
-    getTasks,
     keyword,
     dataTask,
-    createdPlatformValue,
-    formatBudget,
+    selectedBudget,
     router,
     pagination,
-   selectedBudget
+    selectPlatforms,
+    selectBudget,
+    sortBudget,
+    getTasks,
+    createdPlatformValue,
+    formatBudget,
   }
+
 }

@@ -6,7 +6,7 @@
       <div class="search">
         <div class="input">
           <label for="">Sort Budget</label>
-          <select v-model="selectedBudget" name="" id="">
+          <select v-model="selectedBudget" @change="selectBudget" name="" id="">
             <option value="selected">Selected</option>
             <option value="min">Min</option>
             <option value="max">Max</option>
@@ -14,7 +14,12 @@
         </div>
         <div class="input">
           <label for="">Platform</label>
-          <select v-model="selectedPlatform" name="" id="">
+          <select
+            @change="selectPlatforms"
+            v-model="selectedPlatform"
+            name=""
+            id=""
+          >
             <option
               v-for="(platform, index) in componentTask.allPlatform"
               :key="index"
@@ -98,30 +103,25 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, onMounted, ref, watch } from "vue";
-  import { useRoute } from "vue-router";
+  import { defineComponent, ref } from "vue";
 
   import useTaskSearch from "@/components/task-search/tasks-search";
-  //import router from "@/router";
 
   export default defineComponent({
     name: "TasksSearch",
-
     setup() {
       const {
         componentTask,
-        getTasks,
-        selectedBudget,
-        dataTask,
         selectedPlatform,
-        formatBudget,
-        pagination,
-        
+        selectedBudget,
         keyword,
+        dataTask,
+        selectPlatforms,
+        selectBudget,
+        pagination,
+        formatBudget,
         createdPlatformValue,
       } = useTaskSearch();
-
-      const route = useRoute();
 
       const table = ref([
         "Title",
@@ -132,38 +132,18 @@
         "Added Time",
       ]);
 
-      watch(
-        // Every access with <routerlink>
-        () => route.params.id,
-        (newId) => {
-          switch (newId) {
-            case "1":
-              pagination(0, 6);
-              break;
-            case "2":
-              pagination(6, 9);
-              break;
-            case "":
-              pagination(10);
-              break;
-          }
-        }
-      );
-
-      onMounted(() => {
-        getTasks();
-      });
-
       return {
-        formatBudget,
         table,
-        dataTask,
-        selectedPlatform,
         componentTask,
-        pagination,
-        keyword,
-        createdPlatformValue,
+        selectedPlatform,
         selectedBudget,
+        keyword,
+        dataTask,
+        selectPlatforms,
+        selectBudget,
+        pagination,
+        formatBudget,
+        createdPlatformValue,
       };
     },
   });
