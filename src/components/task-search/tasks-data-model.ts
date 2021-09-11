@@ -26,12 +26,22 @@ export default function dataModel() {
         return  typeof componentTask.sortData == "undefined" ? componentTask.task : componentTask.sortData
     })
 
+    const removeDuplicatePlatform = (platform: [string]) => {
+        componentTask.allPlatform.push(...new Set(platform))
+    }
+
     const pagination = (start: number, end?: number) => {
         if (typeof componentTask.sortData == "undefined") {
             componentTask.task  = componentTask.allTasks.slice(start, end)
         }   else { 
             componentTask.sortData  = componentTask.allTasks.slice(start, end)
         }
+    }
+
+    const getPlatform = () => {
+        const getDataPlatform = componentTask.task.map((element: any) => element.platforms.flat())
+    
+        removeDuplicatePlatform(getDataPlatform.flat())
     }
 
 
@@ -42,6 +52,7 @@ export default function dataModel() {
         getTasks().then(res => {
             componentTask.allTasks = res.data.tasks
             pagination(0, 6)
+            getPlatform()
         })
 
     })
