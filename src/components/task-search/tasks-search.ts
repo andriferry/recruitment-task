@@ -2,7 +2,6 @@ import { reactive, computed, watch, ref , onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import {  params , allDataComponent } from '@/models/search-tasks.model'
 import api from "@/services/api";
-import useSort from "./tasks-sorta";
 
 
 //Wrong file
@@ -11,7 +10,7 @@ import useSort from "./tasks-sorta";
 
 export default function useTaskSearch() {
 
-  const {sortBudget} = useSort()
+  
 
   const router: any = useRouter()
 

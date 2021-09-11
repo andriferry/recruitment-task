@@ -112,7 +112,12 @@
   export default defineComponent({
     name: "TasksSearch",
     setup() {
-      const { selectedBudget, selectedPlatform, componentTask } = dataModel();
+      const {
+        selectedBudget,
+        selectedPlatform,
+        componentTask,
+        dataTask,
+      } = dataModel();
 
       const { createdPlatformValue, sortPlatform } = usePlatform(componentTask);
 
@@ -127,11 +132,6 @@
         "Added Time",
       ]);
 
-      const dataTask = computed(() => {
-        return typeof componentTask.sortData == "undefined"
-          ? componentTask.task
-          : componentTask.sortData;
-      });
 
       watch(selectedBudget, (budget: string) => {
         if (budget !== "selected") sortBudget(budget);

@@ -29,9 +29,9 @@ export default function dataModel() {
     const keyword = ref<string>("")
 
 
-    // const dataTask = computed(() => {
-    //     return  typeof componentTask.sortData == "undefined" ? componentTask.task : componentTask.sortData
-    // })
+    const dataTask = computed(() => {
+        return  typeof componentTask.sortData == "undefined" ? componentTask.task : componentTask.sortData
+    })
 
 
     const getTasks = () => api.get("tasks", { params: parameter })
@@ -51,6 +51,7 @@ export default function dataModel() {
         selectedPlatform,
         componentTask,
         keyword,
+        dataTask
     }
   
   
