@@ -133,7 +133,7 @@
       ]);
 
       watch(selectedBudget, (budget: string) => {
-        if (budget !== "selected") useBudget(componentTask);
+        if (budget !== "selected") sortBudget(budget);
       });
 
       return {

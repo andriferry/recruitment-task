@@ -1,7 +1,4 @@
-//import dataModel from "../components/task-search/tasks-data-model";
-
-
-export default function useBudget(componentTask: any) {
+export default function useBudget(dataTask: any) {
    
 
     const formatBudget = (value: number ,currency: string,location: string) => {
@@ -14,25 +11,24 @@ export default function useBudget(componentTask: any) {
     }
 
     const sortMaxBudget = () => {
-        if (typeof componentTask.sortData == "undefined") {
-            componentTask.task.sort((a: any,b: any) => (a.budget.value < b.budget.value) ? 1 : ((b.budget.value < a.budget.value) ? -1 : 0))   
+        if (typeof dataTask.sortData == "undefined") {
+            dataTask.task.sort((a: any,b: any) => (a.budget.value < b.budget.value) ? 1 : ((b.budget.value < a.budget.value) ? -1 : 0))   
         } else {
-            componentTask.sortData.sort((a: any,b: any) => (a.budget.value < b.budget.value) ? 1 : ((b.budget.value < a.budget.value) ? -1 : 0))
+            dataTask.sortData.sort((a: any,b: any) => (a.budget.value < b.budget.value) ? 1 : ((b.budget.value < a.budget.value) ? -1 : 0))
         }
     }
 
 
     const sortMinBudget = () => {
-        if (typeof componentTask.sortData == "undefined") {
-            componentTask.task.sort((a: any,b: any) => (a.budget.value > b.budget.value) ? 1 : ((b.budget.value > a.budget.value) ? -1 : 0))
+        if (typeof dataTask.sortData == "undefined") {
+            dataTask.task.sort((a: any,b: any) => (a.budget.value > b.budget.value) ? 1 : ((b.budget.value > a.budget.value) ? -1 : 0))
         } else {
-            componentTask.sortData.sort((a: any,b: any) => (a.budget.value > b.budget.value) ? 1 : ((b.budget.value > a.budget.value) ? -1 : 0))
+            dataTask.sortData.sort((a: any,b: any) => (a.budget.value > b.budget.value) ? 1 : ((b.budget.value > a.budget.value) ? -1 : 0))
         }
     }
 
 
     const sortBudget = (budget: string) => {
-        console.log(componentTask)
         if (budget == "max") {
             sortMaxBudget()
         } else {
@@ -41,7 +37,7 @@ export default function useBudget(componentTask: any) {
     }
 
 
-    return {formatBudget, sortBudget , componentTask}
+    return {formatBudget, sortBudget }
 }
 
 
