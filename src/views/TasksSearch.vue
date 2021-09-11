@@ -103,7 +103,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, watch } from "vue";
+  import { defineComponent, ref, watch, computed } from "vue";
 
   import dataModel from "@/components/task-search/tasks-data-model";
   import usePlatform from "@/controller/platform";
@@ -112,14 +112,9 @@
   export default defineComponent({
     name: "TasksSearch",
     setup() {
-      const {
-        selectedBudget,
-        selectedPlatform,
-        componentTask,
-        dataTask,
-      } = dataModel();
+      const { selectedBudget, selectedPlatform, componentTask } = dataModel();
 
-      const { createdPlatformValue } = usePlatform();
+      const { createdPlatformValue, sortPlatform } = usePlatform(componentTask);
 
       const { formatBudget, sortBudget } = useBudget(componentTask);
 
@@ -132,8 +127,22 @@
         "Added Time",
       ]);
 
+      const dataTask = computed(() => {
+        return typeof componentTask.sortData == "undefined"
+          ? componentTask.task
+          : componentTask.sortData;
+      });
+
       watch(selectedBudget, (budget: string) => {
         if (budget !== "selected") sortBudget(budget);
+      });
+
+      watch(selectedPlatform, (platform: string) => {
+        if (platform !== "all") {
+          sortPlatform(platform);
+        } else {
+          componentTask.sortData = undefined;
+        }
       });
 
       return {
