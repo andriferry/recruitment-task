@@ -13,19 +13,23 @@ export default function useTaskSearch() {
   const componentTask = reactive<allDataComponent>({
     task: undefined,
     allPlatform: ["ALL"],
-    sortData: undefined, // Onedata instead
-    allTasks: undefined
+    sortData: undefined, 
+    allTasks: undefined,
+    singleData: undefined
   })
 
   const selectedPlatform = ref<string>("all")
 
   const selectedBudget = ref<string>("selected")
 
+  const keyword = ref<string>("")
+
   const parameter = reactive<params>({
     limit: 10
   });
 
   const dataTask = computed(() => {
+ 
    return  typeof componentTask.sortData == "undefined" ? componentTask.task : componentTask.sortData
   })
   
@@ -44,6 +48,8 @@ export default function useTaskSearch() {
 
     componentTask.sortData = array
   }
+
+
 
 
   const sortMaxBudget = () => {
@@ -74,7 +80,7 @@ export default function useTaskSearch() {
 
     if (typeof componentTask.sortData == "undefined") {
       componentTask.task  = componentTask.allTasks.slice(start, end)
-    } else { // There's Error
+    } else { 
       componentTask.sortData  = componentTask.allTasks.slice(start, end)
     }
 
@@ -86,16 +92,11 @@ export default function useTaskSearch() {
       sortPlatform(platform)
     } else {
       componentTask.sortData = undefined
-     // pagination(0, 6)
     }
   })
 
   watch(selectedBudget, (budget: string) => {
-    if (budget !== "selected") {
-      sortBudget(budget)
-    } else {
-      pagination(0, 6)
-    }
+    if (budget !== "selected")  sortBudget(budget)
   })
 
   const getPlatform = () => {
@@ -133,7 +134,9 @@ export default function useTaskSearch() {
   return {
     componentTask,
     selectedPlatform,
+
     getTasks,
+    keyword,
     dataTask,
     createdPlatformValue,
     formatBudget,

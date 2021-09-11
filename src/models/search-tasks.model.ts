@@ -6,5 +6,6 @@ export interface allDataComponent {
     task: any,
     allPlatform: string[],
     sortData: any,
-    allTasks: any
+    allTasks: any,
+    singleData: any
 }

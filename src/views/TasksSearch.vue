@@ -25,7 +25,7 @@
         </div>
         <div class="input">
           <label for="">Search</label>
-          <input type="text" />
+          <input v-model="keyword" type="text" />
         </div>
       </div>
 
@@ -116,6 +116,8 @@
         selectedPlatform,
         formatBudget,
         pagination,
+        
+        keyword,
         createdPlatformValue,
       } = useTaskSearch();
 
@@ -159,6 +161,7 @@
         selectedPlatform,
         componentTask,
         pagination,
+        keyword,
         createdPlatformValue,
         selectedBudget,
       };
@@ -192,7 +195,7 @@
     .pagination,
     .search {
       display: flex;
-      justify-content: end;
+      justify-content: flex-end;
       padding: 15px 5px;
       a {
         margin: 0px 5px;
