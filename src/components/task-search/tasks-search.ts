@@ -2,7 +2,7 @@ import { reactive, computed, watch, ref , onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import {  params , allDataComponent } from '@/models/search-tasks.model'
 import api from "@/services/api";
-import useSort from "./tasks-sort";
+import useSort from "./tasks-sorta";
 
 
 

@@ -1,10 +1,16 @@
-//import dataModel from "@/components/task-search/tasks-data-model";
-
-
-export default function usePlatform() {
+export default function usePlatform(dataTask?: any) {
     const createdPlatformValue = (platformValue: string) => platformValue.toLowerCase();
 
+    const removeDuplicatePlatform = (platform: [string]) => {
+        dataTask.allPlatform.push(...new Set(platform))
+    }
 
 
-    return {createdPlatformValue}
+    const getPlatform = () => {
+        const getDataPlatform = dataTask.task.map((element: any) => element.platforms.flat())
+        removeDuplicatePlatform(getDataPlatform.flat())
+    }
+
+
+    return {createdPlatformValue , getPlatform}
 }

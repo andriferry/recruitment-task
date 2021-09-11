@@ -1,6 +1,9 @@
-import {  params , allDataComponent } from '@/models/search-tasks.model'
+import { params, allDataComponent } from '@/models/search-tasks.model'
 import api from "@/services/api";
 import { reactive, ref , onMounted , computed } from 'vue'
+import usePlatform from '@/controller/platform';
+import usePagination from '@/controller/pagination';
+
 
 
 export default function dataModel() {
@@ -15,6 +18,10 @@ export default function dataModel() {
         singleData: undefined
     })
 
+    const { getPlatform } = usePlatform(componentTask)
+    
+    const {pagination} = usePagination(componentTask)
+
     const selectedPlatform = ref<string|any>("all")
 
     const selectedBudget = ref<string>("selected")
@@ -26,26 +33,8 @@ export default function dataModel() {
         return  typeof componentTask.sortData == "undefined" ? componentTask.task : componentTask.sortData
     })
 
-    const removeDuplicatePlatform = (platform: [string]) => {
-        componentTask.allPlatform.push(...new Set(platform))
-    }
 
-    const pagination = (start: number, end?: number) => {
-        if (typeof componentTask.sortData == "undefined") {
-            componentTask.task  = componentTask.allTasks.slice(start, end)
-        }   else { 
-            componentTask.sortData  = componentTask.allTasks.slice(start, end)
-        }
-    }
-
-    const getPlatform = () => {
-        const getDataPlatform = componentTask.task.map((element: any) => element.platforms.flat())
-    
-        removeDuplicatePlatform(getDataPlatform.flat())
-    }
-
-
-    const getTasks =  () => api.get("tasks", {params: parameter})
+    const getTasks = () => api.get("tasks", { params: parameter })
 
 
     onMounted(() => {

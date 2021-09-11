@@ -1,15 +1,12 @@
-import dataModel from "@/components/task-search/tasks-data-model";
-
-export default function usePagination() {
-    const {componentTask} = dataModel()
+export default function usePagination(dataTask: any) {
 
 
     const pagination = (start: number, end?: number) => {
 
-    if (typeof componentTask.sortData == "undefined") {
-      componentTask.task  = componentTask.allTasks.slice(start, end)
+    if (typeof dataTask.sortData == "undefined") {
+      dataTask.task  = dataTask.allTasks.slice(start, end)
     } else { 
-      componentTask.sortData  = componentTask.allTasks.slice(start, end)
+      dataTask.sortData  = dataTask.allTasks.slice(start, end)
     }
 
     
