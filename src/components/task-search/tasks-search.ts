@@ -7,7 +7,9 @@ import api from "@/services/api";
 
 export default function useTaskSearch() {
 
-  const router = useRouter()
+  const router: any = useRouter()
+
+  const queryRouter = router.currentRoute.value.query
 
 
   const componentTask = reactive<allDataComponent>({
@@ -18,18 +20,15 @@ export default function useTaskSearch() {
     singleData: undefined
   })
 
-  const selectedPlatform = ref<string>("all")
+  const selectedPlatform = ref<string|any>("all")
 
   const selectedBudget = ref<string>("selected")
 
   const keyword = ref<string>("")
 
-  const parameter = reactive<params>({
-    limit: 10
-  });
+  const parameter = reactive<params>({limit: 10});
 
   const dataTask = computed(() => {
- 
    return  typeof componentTask.sortData == "undefined" ? componentTask.task : componentTask.sortData
   })
   
@@ -73,7 +72,7 @@ export default function useTaskSearch() {
     }  
   }
 
-  const pagination = (start: number ,end?: number) => {
+  const pagination = (start: number, end?: number) => {
 
     if (typeof componentTask.sortData == "undefined") {
       componentTask.task  = componentTask.allTasks.slice(start, end)
@@ -115,23 +114,6 @@ export default function useTaskSearch() {
     if (budget !== "selected")  sortBudget(budget)
   })
 
-  // watch(
-  //       // Every access with <routerlink>
-  //       () => route.params.id,
-  //       (newId) => {
-  //         switch (newId) {
-  //           case "1":
-  //             pagination(0, 6);
-  //             break;
-  //           case "2":
-  //             pagination(6, 9);
-  //             break;
-  //           case "":
-  //             pagination(10);
-  //             break;
-  //         }
-  //       }
-  // );
 
   const getPlatform = () => {
     const getDataPlatform = componentTask.task.map((element: any) => element.platforms.flat())
@@ -139,34 +121,64 @@ export default function useTaskSearch() {
     removeDuplicatePlatform(getDataPlatform.flat())
 
   }
-
-  
-  
     
-  const getTasks = () => {
-    api.get("tasks", {params: parameter}).then(res => {
-      componentTask.allTasks = res.data.tasks
-      pagination(0, 6) // First slice to show 6 data
-      getPlatform()
-    })
-  }
+  const getTasks =  () => api.get("tasks", {params: parameter})
+  
 
 
-   const createdPlatformValue = (platformValue: string) => platformValue.toLowerCase();
+  const createdPlatformValue = (platformValue: string) => platformValue.toLowerCase();
     
   
   onMounted(() => {
-    getTasks()
+    getTasks().then(res => {
+      componentTask.allTasks = res.data.tasks
+      if (Object.keys(queryRouter).length == 0) {
+          pagination(0, 6) // First slice to show 6 data
+          getPlatform()
+      } else {
+        if (queryRouter.platform !== "undefined") {
+          if (queryRouter.platform !== "") {
+            if (queryRouter.platform == "all") {
+              pagination(0, 6) // First slice to show 6 data
+              getPlatform()
+            } else {
+              pagination(0, 6) // First slice to show 6 data
+              getPlatform()
+              selectedPlatform.value = queryRouter.platform
+              sortPlatform(queryRouter.platform)
+            }            
+          } else {
+            console.log('Your URL not found')
+          }
+        }
+        
+        if (queryRouter.budget !== "undefined") {
+          if (queryRouter.budget !== "") {
+            if (queryRouter.budget == "selected") {
+              pagination(0, 6) // First slice to show 6 data
+              getPlatform()
+            } else {
+              pagination(0, 6) // First slice to show 6 data
+              getPlatform()
+              selectedBudget.value = queryRouter.budget
+              sortPlatform(queryRouter.budget)
+            }            
+          } else {
+            console.log('Your URL not found')
+          }
+        }
+      } 
+    })
   })
   
-    const formatBudget = (value: number ,currency: string,location: string) => {
-      const numberObject = new Number(value);
+  const formatBudget = (value: number ,currency: string,location: string) => {
+    const numberObject = new Number(value);
       const myObj = {
         style: "currency",
         currency: currency
       };
       return numberObject.toLocaleString(location, myObj);
-    }
+  }
     
  
   return {
