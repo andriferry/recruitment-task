@@ -30,7 +30,7 @@
         </div>
         <div class="input">
           <label for="">Search</label>
-          <input v-model="keyword" type="text" />
+          <input type="text" />
         </div>
       </div>
 
@@ -105,23 +105,23 @@
 <script lang="ts">
   import { defineComponent, ref } from "vue";
 
-  import useTaskSearch from "@/components/task-search/tasks-search";
+  import dataModel from "@/components/task-search/tasks-data-model";
+  import usePlatform from "@/controller/platform";
+  import useBudget from "@/controller/budget";
 
   export default defineComponent({
     name: "TasksSearch",
     setup() {
       const {
-        componentTask,
-        selectedPlatform,
         selectedBudget,
-        keyword,
+        selectedPlatform,
+        componentTask,
         dataTask,
-        selectPlatforms,
-        selectBudget,
-        pagination,
-        formatBudget,
-        createdPlatformValue,
-      } = useTaskSearch();
+      } = dataModel();
+
+      const { createdPlatformValue } = usePlatform();
+
+      const { formatBudget } = useBudget();
 
       const table = ref([
         "Title",
@@ -134,16 +134,12 @@
 
       return {
         table,
-        componentTask,
-        selectedPlatform,
         selectedBudget,
-        keyword,
+        selectedPlatform,
+        componentTask,
         dataTask,
-        selectPlatforms,
-        selectBudget,
-        pagination,
-        formatBudget,
         createdPlatformValue,
+        formatBudget,
       };
     },
   });

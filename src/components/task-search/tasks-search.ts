@@ -2,10 +2,13 @@ import { reactive, computed, watch, ref , onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import {  params , allDataComponent } from '@/models/search-tasks.model'
 import api from "@/services/api";
+import useSort from "./tasks-sort";
 
 
 
 export default function useTaskSearch() {
+
+  const {sortBudget} = useSort()
 
   const router: any = useRouter()
 
@@ -64,24 +67,24 @@ export default function useTaskSearch() {
     }
   } 
 
-  const sortBudget = (budget: string) => {
-    if (budget == "max") {
-      sortMaxBudget()
-    } else {
-      sortMinBudget()
-    }  
-  }
+// const sortBudget = (budget: string) => {
+  //   if (budget == "max") {
+  //     sortMaxBudget()
+  //   } else {
+  //     sortMinBudget()
+  //   }  
+  // }
 
-  const pagination = (start: number, end?: number) => {
+  // const pagination = (start: number, end?: number) => {
 
-    if (typeof componentTask.sortData == "undefined") {
-      componentTask.task  = componentTask.allTasks.slice(start, end)
-    } else { 
-      componentTask.sortData  = componentTask.allTasks.slice(start, end)
-    }
+  //   if (typeof componentTask.sortData == "undefined") {
+  //     componentTask.task  = componentTask.allTasks.slice(start, end)
+  //   } else { 
+  //     componentTask.sortData  = componentTask.allTasks.slice(start, end)
+  //   }
 
     
-  }
+  // }
   const selectBudget = () => {
         router.push({
           path: router.currentRoute.value.fullPath,
@@ -126,48 +129,51 @@ export default function useTaskSearch() {
   
 
 
-  const createdPlatformValue = (platformValue: string) => platformValue.toLowerCase();
+  // const createdPlatformValue = (platformValue: string) => platformValue.toLowerCase();
     
   
   onMounted(() => {
+
     getTasks().then(res => {
       componentTask.allTasks = res.data.tasks
-      if (Object.keys(queryRouter).length == 0) {
-          pagination(0, 6) // First slice to show 6 data
-          getPlatform()
-      } else {
-        if (queryRouter.platform !== "undefined") {
-          if (queryRouter.platform !== "") {
-            if (queryRouter.platform == "all") {
-              pagination(0, 6) // First slice to show 6 data
-              getPlatform()
-            } else {
-              pagination(0, 6) // First slice to show 6 data
-              getPlatform()
-              selectedPlatform.value = queryRouter.platform
-              sortPlatform(queryRouter.platform)
-            }            
-          } else {
-            console.log('Your URL not found')
-          }
-        }
+      pagination(0, 6) // First slice to show 6 data
+      getPlatform()
+      // if (Object.keys(queryRouter).length == 0) {
+      //     pagination(0, 6) // First slice to show 6 data
+      //     getPlatform()
+      // } else {
+      //   if (queryRouter.platform !== "undefined") {
+      //     if (queryRouter.platform !== "") {
+      //       if (queryRouter.platform == "all") {
+      //         pagination(0, 6) // First slice to show 6 data
+      //         getPlatform()
+      //       } else {
+      //         pagination(0, 6) // First slice to show 6 data
+      //         getPlatform()
+      //         selectedPlatform.value = queryRouter.platform
+      //         sortPlatform(queryRouter.platform)
+      //       }            
+      //     } else {
+      //       console.log('Your URL not found')
+      //     }
+      //   }
         
-        if (queryRouter.budget !== "undefined") {
-          if (queryRouter.budget !== "") {
-            if (queryRouter.budget == "selected") {
-              pagination(0, 6) // First slice to show 6 data
-              getPlatform()
-            } else {
-              pagination(0, 6) // First slice to show 6 data
-              getPlatform()
-              selectedBudget.value = queryRouter.budget
-              sortPlatform(queryRouter.budget)
-            }            
-          } else {
-            console.log('Your URL not found')
-          }
-        }
-      } 
+      //   if (queryRouter.budget !== "undefined") {
+      //     if (queryRouter.budget !== "") {
+      //       if (queryRouter.budget == "selected") {
+      //         pagination(0, 6) // First slice to show 6 data
+      //         getPlatform()
+      //       } else {
+      //         pagination(0, 6) // First slice to show 6 data
+      //         getPlatform()
+      //         selectedBudget.value = queryRouter.budget
+      //         sortPlatform(queryRouter.budget)
+      //       }            
+      //     } else {
+      //       console.log('Your URL not found')
+      //     }
+      //   }
+      // } 
     })
   })
   
@@ -188,10 +194,10 @@ export default function useTaskSearch() {
     dataTask,
     selectedBudget,
     router,
+    getPlatform,
     pagination,
     selectPlatforms,
     selectBudget,
-    sortBudget,
     getTasks,
     createdPlatformValue,
     formatBudget,
