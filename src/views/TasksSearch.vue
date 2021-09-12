@@ -103,8 +103,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, watch, computed } from "vue";
-
+  import { defineComponent, ref, watch } from "vue";
   import dataModel from "@/components/task-search/tasks-data-model";
   import usePlatform from "@/controller/platform";
   import useBudget from "@/controller/budget";
@@ -119,9 +118,15 @@
         dataTask,
       } = dataModel();
 
-      const { createdPlatformValue, sortPlatform } = usePlatform(componentTask, selectedBudget.value);
+      const { createdPlatformValue, sortPlatform } = usePlatform(
+        componentTask,
+        selectedBudget.value
+      );
 
-      const { formatBudget, sortBudget } = useBudget(componentTask);
+      const { formatBudget, sortBudget } = useBudget(
+        componentTask,
+        selectedPlatform.value
+      );
 
       const table = ref([
         "Title",
@@ -131,7 +136,6 @@
         "Platform",
         "Added Time",
       ]);
-
 
       watch(selectedBudget, (budget: string) => {
         if (budget !== "selected") sortBudget(budget);

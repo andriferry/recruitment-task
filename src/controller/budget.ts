@@ -1,6 +1,9 @@
-export default function useBudget(dataTask: any) {
-   
+import { useRouter } from 'vue-router'
 
+export default function useBudget(dataTask: any, platform?: string) {
+    
+    const router: any = useRouter()
+    
     const formatBudget = (value: number ,currency: string,location: string) => {
         const numberObject = new Number(value);
         const myObj = {
@@ -27,12 +30,24 @@ export default function useBudget(dataTask: any) {
         }
     }
 
+    const queryBudget = ((budget: string) => {
+        router.push({
+            path: router.currentRoute.value.fullPath,
+            query: {
+                platform,
+                budget
+            }
+        })
+    })
+
 
     const sortBudget = (budget: string) => {
         if (budget == "max") {
             sortMaxBudget()
+            queryBudget(budget)
         } else {
             sortMinBudget()
+            queryBudget(budget)
         }
     }
 

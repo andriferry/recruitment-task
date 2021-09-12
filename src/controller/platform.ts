@@ -1,5 +1,6 @@
 import { useRouter } from 'vue-router'
-export default function usePlatform(dataTask?: any, budget?: any) {
+export default function usePlatform(dataTask?: any, budget?: string) {
+
     
     const router: any = useRouter()
     
