@@ -1,7 +1,6 @@
 import { useRouter } from 'vue-router'
-export default function usePlatform(dataTask?: any, budget?: string) {
 
-    
+export default function usePlatform(dataTask?: any , budget?: string) {
     const router: any = useRouter()
     
     const createdPlatformValue = (platformValue: string) => platformValue.toLowerCase();
@@ -11,7 +10,7 @@ export default function usePlatform(dataTask?: any, budget?: string) {
     }
 
 
-    const queryPlatform = (platform: string) => {
+    const queryPlatform = (platform: any) => {
         router.push({
             path: router.currentRoute.value.fullPath,
             query: {
@@ -37,7 +36,6 @@ export default function usePlatform(dataTask?: any, budget?: string) {
         const getDataPlatform = dataTask.task.map((element: any) => element.platforms.flat())
         removeDuplicatePlatform(getDataPlatform.flat())
     }
-
 
     return {createdPlatformValue , getPlatform , sortPlatform}
 }

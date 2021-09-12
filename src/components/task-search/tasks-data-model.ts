@@ -20,7 +20,7 @@ export default function dataModel() {
 
     const { getPlatform } = usePlatform(componentTask)
     
-    const {pagination} = usePagination(componentTask)
+    const {pagination } = usePagination(componentTask)
 
     const selectedPlatform = ref<string|any>("all")
 

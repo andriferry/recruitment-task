@@ -66,7 +66,6 @@
           v-for="data in 3"
           :key="data"
           :to="{ name: 'TaskResult', params: { id: data } }"
-          @click="pagination(tasks.length, tasks.length + 3)"
         >
           {{ data }}
         </router-link>
@@ -103,10 +102,12 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, watch } from "vue";
+  import { defineComponent, ref, watch, onMounted } from "vue";
   import dataModel from "@/components/task-search/tasks-data-model";
   import usePlatform from "@/controller/platform";
   import useBudget from "@/controller/budget";
+  import usePagination from "../controller/pagination";
+  import { useRouter } from "vue-router";
 
   export default defineComponent({
     name: "TasksSearch",
@@ -117,6 +118,9 @@
         componentTask,
         dataTask,
       } = dataModel();
+      const router = useRouter();
+
+      const queryRouter = router.currentRoute.value.query;
 
       const { createdPlatformValue, sortPlatform } = usePlatform(
         componentTask,
@@ -127,6 +131,8 @@
         componentTask,
         selectedPlatform.value
       );
+
+      const { paginateStart } = usePagination(componentTask);
 
       const table = ref([
         "Title",
@@ -146,6 +152,22 @@
           sortPlatform(platform);
         } else {
           componentTask.sortData = undefined;
+        }
+      });
+
+      watch(
+        () => router.currentRoute.value.params.id,
+        (newId) => {
+          paginateStart(newId);
+          console.log(router.currentRoute.value.query);
+        }
+      );
+
+      onMounted(() => {
+        if (Object.keys(queryRouter).length > 0) {
+          sortPlatform(queryRouter.platform)
+
+          console.log(queryRouter.platform);
         }
       });
 
