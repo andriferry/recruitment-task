@@ -93,15 +93,9 @@
       } = dataModel();
       const router = useRouter();
 
-      const { createdPlatformValue, sortPlatform } = usePlatform(
-        componentTask,
-        selectedBudget.value
-      );
+      const { createdPlatformValue, sortPlatform } = usePlatform(componentTask);
 
-      const { formatBudget, sortBudget } = useBudget(
-        componentTask,
-        selectedPlatform.value
-      );
+      const { formatBudget, sortBudget } = useBudget(componentTask);
 
       const { paginateStart } = usePagination(componentTask);
 
@@ -122,14 +116,14 @@
       };
 
       watch(selectedBudget, (budget: string) => {
-        sortBudget(budget);
+        sortBudget(budget, selectedPlatform.value);
       });
 
       watch(selectedPlatform, (platform: string) => {
         if (platform !== "all") {
-          sortPlatform(platform);
+          sortPlatform(platform, selectedBudget.value);
         } else {
-          sortPlatform(platform);
+          sortPlatform(platform, selectedBudget.value);
           componentTask.sortData = undefined;
         }
       });

@@ -2,7 +2,7 @@ import { useRouter } from 'vue-router'
 import usePagination from './pagination';
 import { computed } from "vue";
 
-export default function useBudget(dataTask: any, platform?: string) {
+export default function useBudget(dataTask: any) {
     
     const router: any = useRouter()
 
@@ -37,7 +37,7 @@ export default function useBudget(dataTask: any, platform?: string) {
     }
 
   
-    const routePush = ((budget: string, page?: number) => {
+    const routePush = ((budget: string, platform?: any, page?: number) => {
         router.push({
             path: router.currentRoute.value.fullPath,
             query: {
@@ -49,20 +49,20 @@ export default function useBudget(dataTask: any, platform?: string) {
     })
 
     
-    const queryBudget = ((budget: string) => {
+    const queryBudget = ((budget: string , platform: any) => {
         checkQueryPage().then(respond => {
-            respond == true ? routePush(budget, queryRouter.value.page) : routePush(budget)
+            respond == true ? routePush(budget, platform, queryRouter.value.page) : routePush(budget , platform)
         })
     })
 
 
-    const sortBudget = (budget: string) => {
+    const sortBudget = (budget: string, platform?: any) => {
         if (budget == "max") {
             sortMaxBudget()
-            queryBudget(budget)
+            queryBudget(budget, platform)
         } else {
             sortMinBudget()
-            queryBudget(budget)
+            queryBudget(budget, platform)
         }
     }
 

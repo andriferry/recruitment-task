@@ -70,6 +70,13 @@ export default function usePagination(dataTask?: any) {
  
   })
 
+
+  // const mountPagination = (() => {
+  //   return new Promise<boolean>((resolve, reject) => {
+      
+  //   })
+  // })
+
   
   
   return { pagination, paginateStart, checkQueryPage,dataPerPage, currentDataIndex }

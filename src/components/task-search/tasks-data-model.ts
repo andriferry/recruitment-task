@@ -56,6 +56,7 @@ export default function dataModel() {
                     mountBudget().then(respond => {
                         if (respond == true) {
                             getPlatform()
+
                             selectedBudget.value = queryRouter.budget
                         } else {
                             getPlatform()
