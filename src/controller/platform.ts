@@ -40,5 +40,21 @@ export default function usePlatform(dataTask?: any , budget?: string) {
         removeDuplicatePlatform(getDataPlatform.flat())
     }
 
-    return {createdPlatformValue,   getPlatform , sortPlatform}
+
+    const mountPlatform = () => {
+        return new Promise((resolve, reject) => {
+            if (queryRouter.platform !== "all") {
+                getPlatform()
+                sortPlatform(queryRouter.platform)
+                resolve(true)
+            } else {
+                getPlatform
+            }
+        })
+    }
+
+
+    
+
+    return {createdPlatformValue, mountPlatform,   getPlatform , sortPlatform}
 }

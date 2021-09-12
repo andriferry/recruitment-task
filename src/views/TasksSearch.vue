@@ -142,13 +142,14 @@
       ]);
 
       watch(selectedBudget, (budget: string) => {
-        if (budget !== "selected") sortBudget(budget);
+        sortBudget(budget);
       });
 
       watch(selectedPlatform, (platform: string) => {
         if (platform !== "all") {
           sortPlatform(platform);
         } else {
+          sortPlatform(platform);
           componentTask.sortData = undefined;
         }
       });

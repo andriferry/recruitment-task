@@ -24,7 +24,7 @@ export default function dataModel() {
         singleData: undefined
     })
 
-    const { getPlatform , sortPlatform } = usePlatform(componentTask)
+    const { getPlatform , sortPlatform , mountPlatform } = usePlatform(componentTask)
     
     const {pagination } = usePagination(componentTask)
 
@@ -46,40 +46,65 @@ export default function dataModel() {
     onMounted(() => {
         getTasks().then(res => {
             componentTask.allTasks = res.data.tasks
+            pagination(0, 6)
             
-            if (Object.keys(queryRouter).length == 0) {
-                pagination(0, 6)
-                getPlatform()
-                
-            } else {
+            if (Object.keys(queryRouter).length > 0) {
+               
                 if (typeof queryRouter.platform !== "undefined") {
                     if (queryRouter.platform !== "") {
-                        if (queryRouter.platform == "all") {
-                            pagination(0, 6)
-                            getPlatform()
-                        } else {
-                            pagination(0, 6) // First slice to show 6 data
-                            getPlatform()
-                            selectedPlatform.value = queryRouter.platform
-                            sortPlatform(queryRouter.platform)
-                        }
+                        mountPlatform().then(res => {
+                            if (res == true) selectedPlatform.value = queryRouter.platform
+                        })
                     }
                 } else if (typeof queryRouter.budget !== "undefined") {
                     if (queryRouter.budget !== "") {
                         if (queryRouter.budget == "selected") {
-                            pagination(0, 6)
+                            // pagination(0, 6)
                             getPlatform()
                         } else {
-                            pagination(0, 6)
+                            // pagination(0, 6)
                             getPlatform()
                             selectedBudget.value = queryRouter.budget
                             sortPlatform(queryRouter.budget)
                         }
                     }         
                 } else {
-                    pagination(0, 6)
+                    // pagination(0, 6)
                     getPlatform()
                 }
+                
+            } else {
+                // if (typeof queryRouter.platform !== "undefined") {
+                //     if (queryRouter.platform !== "") {
+                //         if (queryRouter.platform == "all") {
+                //             pagination(0, 6)
+                //             getPlatform()
+                //         } else {
+                //             pagination(0, 6) // First slice to show 6 data
+                //             getPlatform()
+                //             selectedPlatform.value = queryRouter.platform
+                //             sortPlatform(queryRouter.platform)
+                //         }
+                //     }
+                // } else if (typeof queryRouter.budget !== "undefined") {
+                //     if (queryRouter.budget !== "") {
+                //         if (queryRouter.budget == "selected") {
+                //             pagination(0, 6)
+                //             getPlatform()
+                //         } else {
+                //             pagination(0, 6)
+                //             getPlatform()
+                //             selectedBudget.value = queryRouter.budget
+                //             sortPlatform(queryRouter.budget)
+                //         }
+                //     }         
+                // } else {
+                //     pagination(0, 6)
+                //     getPlatform()
+                // }
+
+                console.log('else')
+                getPlatform()
                 
                 
                 
