@@ -120,8 +120,6 @@
       } = dataModel();
       const router = useRouter();
 
-      const queryRouter = router.currentRoute.value.query;
-
       const { createdPlatformValue, sortPlatform } = usePlatform(
         componentTask,
         selectedBudget.value
@@ -164,11 +162,20 @@
       );
 
       onMounted(() => {
-        if (Object.keys(queryRouter).length > 0) {
-          sortPlatform(queryRouter.platform)
-
-          console.log(queryRouter.platform);
-        }
+        //console.log(componentTask.task);
+        // if (Object.keys(queryRouter).length == 0) {
+        //   pagination(0, 6); // First slice to show 6 data
+        //   getPlatform();
+        // } else {
+        //   if (queryRouter.platform !== "undefined") {
+        //     if (queryRouter.platform !== "") {
+        //       pagination(0, 6); // First slice to show 6 data
+        //       getPlatform();
+        //     }
+        //   } else {
+        //     console.log("NUll");
+        //   }
+        // }
       });
 
       return {
