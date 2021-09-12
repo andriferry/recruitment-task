@@ -108,12 +108,6 @@
         "Added Time",
       ]);
 
-      const start = (page: number) => {
-        router.push({
-          path: router.currentRoute.value.fullPath,
-          query: { page },
-        });
-      };
 
       watch(selectedBudget, (budget: string) => {
         sortBudget(budget, selectedPlatform.value);
@@ -143,7 +137,6 @@
         dataTask,
         createdPlatformValue,
         formatBudget,
-        start,
       };
     },
   });
