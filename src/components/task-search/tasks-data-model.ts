@@ -1,4 +1,4 @@
-import { params, allDataComponent } from '@/models/search-tasks.model'
+import { params, allDataComponent, selectedElement } from '@/models/search-tasks.model'
 import api from "@/services/api";
 import { reactive, ref , onMounted , computed } from 'vue'
 import usePlatform from '@/controller/platform';
@@ -31,9 +31,9 @@ export default function dataModel() {
    
     const { pagination } = usePagination(componentTask)
 
-    const selectedPlatform = ref<string|any>("all")
+    const selectedPlatform = ref<selectedElement>("all")
 
-    const selectedBudget = ref<string|any>("selected")
+    const selectedBudget = ref<selectedElement>("selected")
 
     const dataTask = computed(() => {
         return  typeof componentTask.sortData == "undefined" ? componentTask.task : componentTask.sortData

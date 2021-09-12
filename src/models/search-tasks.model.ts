@@ -9,3 +9,5 @@ export interface allDataComponent {
     allTasks: any,
     singleData: any
 }
+
+export type selectedElement = string | any
