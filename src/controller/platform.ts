@@ -5,13 +5,11 @@ export default function usePlatform(dataTask?: any , budget?: string) {
 
     const queryRouter = router.currentRoute.value.query;
 
-    
     const createdPlatformValue = (platformValue: string) => platformValue.toLowerCase();
 
     const removeDuplicatePlatform = (platform: [string]) => {
         dataTask.allPlatform.push(...new Set(platform))
     }
-
 
     const queryPlatform = (platform: any) => {
         router.push({
@@ -23,7 +21,6 @@ export default function usePlatform(dataTask?: any , budget?: string) {
         })
     }
 
-
     const sortPlatform = (platform: any) => {
         const array: string[] = []
         queryPlatform(platform)
@@ -34,15 +31,13 @@ export default function usePlatform(dataTask?: any , budget?: string) {
         dataTask.sortData = array
     }
 
-
     const getPlatform = () => {
         const getDataPlatform = dataTask.task.map((element: any) => element.platforms.flat())
         removeDuplicatePlatform(getDataPlatform.flat())
     }
 
-
     const mountPlatform = () => {
-        return new Promise<boolean>((resolve, reject) => {
+        return new Promise<boolean>((resolve) => {
             if (queryRouter.platform !== "") {
                 if (queryRouter.platform !== "all") {
                     getPlatform()
@@ -55,9 +50,6 @@ export default function usePlatform(dataTask?: any , budget?: string) {
             
         })
     }
-
-
-    
 
     return {createdPlatformValue, mountPlatform,   getPlatform , sortPlatform}
 }

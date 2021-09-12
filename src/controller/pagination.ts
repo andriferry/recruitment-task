@@ -12,8 +12,7 @@ export default function usePagination(dataTask?: any) {
     } else { 
         dataTask.sortData  = dataTask.allTasks.slice(start, end)
     }
-  }
-    
+  } 
 
   const paginateStart = ((page: any) => {
     if (currentDataIndex.value == "") {
@@ -30,9 +29,6 @@ export default function usePagination(dataTask?: any) {
           break;
       }
 
-
-
-
     } else {
       currentDataIndex.value = page
       switch (page) {
@@ -48,30 +44,7 @@ export default function usePagination(dataTask?: any) {
       }
     }
  
- 
- 
- 
- 
- 
- 
   })
-
-
-
-
-
-
-  // const previousPage = ((page: number) => {
-
-  // })
-
-
-
-  // const toPagination = () => {
-
-  // }
-
-
 
   
   

@@ -6,7 +6,7 @@
       <div class="search">
         <div class="input">
           <label for="">Sort Budget</label>
-          <select v-model="selectedBudget" @change="selectBudget" name="" id="">
+          <select v-model="selectedBudget">
             <option value="selected">Selected</option>
             <option value="min">Min</option>
             <option value="max">Max</option>
@@ -14,12 +14,7 @@
         </div>
         <div class="input">
           <label for="">Platform</label>
-          <select
-            @change="selectPlatforms"
-            v-model="selectedPlatform"
-            name=""
-            id=""
-          >
+          <select v-model="selectedPlatform">
             <option
               v-for="(platform, index) in componentTask.allPlatform"
               :key="index"
@@ -60,8 +55,6 @@
       </table>
 
       <div class="pagination">
-        <a href="#" v-text="'Previous'"></a>
-
         <router-link
           v-for="data in 3"
           :key="data"
@@ -69,40 +62,13 @@
         >
           {{ data }}
         </router-link>
-        <a href="#" v-text="'Next'"></a>
       </div>
-
-      this is all data
-      <table class="tasks" style="margin-top: 10px">
-        <tr>
-          <th v-for="(dataTable, index) in table" :key="index">
-            {{ dataTable }}
-          </th>
-        </tr>
-
-        <tr v-for="(data, index) in componentTask.allTasks" :key="index">
-          <td v-text="data.title"></td>
-          <td v-text="data.description"></td>
-          <td>
-            {{ formatBudget(data.budget.value, data.budget.currency, "en-US") }}
-          </td>
-          <td v-text="data.proposalCount"></td>
-          <td>
-            <ul>
-              <li v-for="(platforms, index) in data.platforms" :key="index">
-                {{ platforms }}
-              </li>
-            </ul>
-          </td>
-          <td v-text="data.addedTime"></td>
-        </tr>
-      </table>
     </div>
   </main>
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, watch, onMounted } from "vue";
+  import { defineComponent, ref, watch } from "vue";
   import dataModel from "@/components/task-search/tasks-data-model";
   import usePlatform from "@/controller/platform";
   import useBudget from "@/controller/budget";
@@ -158,27 +124,8 @@
         () => router.currentRoute.value.params.id,
         (newId) => {
           paginateStart(newId);
-          console.log(router.currentRoute.value.query);
         }
       );
-
-      onMounted(() => {
-        //console.log(componentTask.task);
-        // if (Object.keys(queryRouter).length == 0) {
-        //   pagination(0, 6); // First slice to show 6 data
-        //   getPlatform();
-        // } else {
-        //   if (queryRouter.platform !== "undefined") {
-        //     if (queryRouter.platform !== "") {
-        //       pagination(0, 6); // First slice to show 6 data
-        //       getPlatform();
-        //     }
-        //   } else {
-        //     console.log("NUll");
-        //   }
-        // }
-      });
-
       return {
         table,
         selectedBudget,

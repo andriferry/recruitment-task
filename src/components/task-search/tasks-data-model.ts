@@ -35,13 +35,9 @@ export default function dataModel() {
 
     const selectedBudget = ref<string|any>("selected")
 
-    const keyword = ref<string>("")
-
-
     const dataTask = computed(() => {
         return  typeof componentTask.sortData == "undefined" ? componentTask.task : componentTask.sortData
     })
-
 
     const getTasks = () => api.get("tasks", { params: parameter })
 
@@ -52,16 +48,11 @@ export default function dataModel() {
             pagination(0, 6)
             
             if (Object.keys(queryRouter).length > 0) {
-               
                 if (typeof queryRouter.platform !== "undefined") {
                     mountPlatform().then(respond => {
                         if (respond == true) selectedPlatform.value = queryRouter.platform
                     })
-                }  else {
-                    getPlatform()
-                }
-
-                if (typeof queryRouter.budget !== "undefined") {
+                } else if (typeof queryRouter.budget !== "undefined") {
                     mountBudget().then(respond => {
                         if (respond == true) {
                             getPlatform()
@@ -69,81 +60,18 @@ export default function dataModel() {
                         } else {
                             getPlatform()
                         }
-
-
-
-                    })
-
-
-                    
-                    
-                    
-                    // if (queryRouter.budget !== "") {
-                    //     if (queryRouter.budget == "selected") {
-
-                    //         getPlatform()
-                    //     } else {
-                    //         getPlatform()
-                    //         selectedBudget.value = queryRouter.budget
-                    //         sortPlatform(queryRouter.budget)
-                    //     }
-                    // }         
-                }
-
-
-
-
-                
+                    })      
+                } else {
+                    getPlatform()
+                }   
             } else {
-                // if (typeof queryRouter.platform !== "undefined") {
-                //     if (queryRouter.platform !== "") {
-                //         if (queryRouter.platform == "all") {
-                //             pagination(0, 6)
-                //             getPlatform()
-                //         } else {
-                //             pagination(0, 6) // First slice to show 6 data
-                //             getPlatform()
-                //             selectedPlatform.value = queryRouter.platform
-                //             sortPlatform(queryRouter.platform)
-                //         }
-                //     }
-                // } else if (typeof queryRouter.budget !== "undefined") {
-                //     if (queryRouter.budget !== "") {
-                //         if (queryRouter.budget == "selected") {
-                //             pagination(0, 6)
-                //             getPlatform()
-                //         } else {
-                //             pagination(0, 6)
-                //             getPlatform()
-                //             selectedBudget.value = queryRouter.budget
-                //             sortPlatform(queryRouter.budget)
-                //         }
-                //     }         
-                // } else {
-                //     pagination(0, 6)
-                //     getPlatform()
-                // }
-
                 getPlatform()
-                
-                
-                
-                
-                
-            }
-
-            
+            }    
         })
 
     })
 
-    return {
-        selectedBudget,
-        selectedPlatform,
-        componentTask,
-        keyword,
-        dataTask
-    }
+    return { selectedBudget, selectedPlatform, componentTask,dataTask}
   
   
     

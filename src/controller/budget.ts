@@ -55,7 +55,7 @@ export default function useBudget(dataTask: any, platform?: string) {
 
 
     const mountBudget = () => {
-        return new Promise<boolean>((resolve, reject) => {
+        return new Promise<boolean>((resolve) => {
             if (queryRouter.budget !== "selected") {
                 sortBudget(queryRouter.budget)
                 resolve(true)
