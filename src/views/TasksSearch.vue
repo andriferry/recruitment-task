@@ -1,7 +1,7 @@
 <template>
   <main>
     <h1>Tasks Search view</h1>
-
+    {{ $router.currentRoute.value.fullPath }}
     <div class="container" v-if="componentTask.task">
       <div class="search">
         <div class="input">
@@ -57,8 +57,11 @@
       <div class="pagination">
         <router-link
           v-for="data in 3"
+          :to="{
+            path: $router.currentRoute.value.fullPath,
+            query: { page: data },
+          }"
           :key="data"
-          :to="{ name: 'TaskResult', params: { id: data } }"
         >
           {{ data }}
         </router-link>
@@ -107,6 +110,13 @@
         "Added Time",
       ]);
 
+      const start = (page: number) => {
+        router.push({
+          path: router.currentRoute.value.fullPath,
+          query: { page },
+        });
+      };
+
       watch(selectedBudget, (budget: string) => {
         sortBudget(budget);
       });
@@ -121,11 +131,12 @@
       });
 
       watch(
-        () => router.currentRoute.value.params.id,
-        (newId) => {
-          paginateStart(newId);
+        () => router.currentRoute.value.query,
+        (queryValue) => {
+          paginateStart(queryValue.page);
         }
       );
+
       return {
         table,
         selectedBudget,
@@ -134,6 +145,7 @@
         dataTask,
         createdPlatformValue,
         formatBudget,
+        start,
       };
     },
   });

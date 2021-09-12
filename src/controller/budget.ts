@@ -1,11 +1,15 @@
 import { useRouter } from 'vue-router'
+import usePagination from './pagination';
+import { computed } from "vue";
 
 export default function useBudget(dataTask: any, platform?: string) {
     
     const router: any = useRouter()
 
-    const queryRouter = router.currentRoute.value.query;
-    
+    const queryRouter = computed(() => router.currentRoute.value.query)
+
+    const {checkQueryPage} = usePagination()
+    //Move to interface
     const formatBudget = (value: number ,currency: string,location: string) => {
         const numberObject = new Number(value);
         const myObj = {
@@ -32,13 +36,22 @@ export default function useBudget(dataTask: any, platform?: string) {
         }
     }
 
-    const queryBudget = ((budget: string) => {
+    //move to interface
+    const routePush = ((budget: string, page?: number) => {
         router.push({
             path: router.currentRoute.value.fullPath,
             query: {
                 platform,
-                budget
+                budget,
+                page
             }
+        })
+    })
+
+    
+    const queryBudget = ((budget: string) => {
+        checkQueryPage().then(respond => {
+            respond == true ? routePush(budget, queryRouter.value.page) : routePush(budget)
         })
     })
 
@@ -56,8 +69,8 @@ export default function useBudget(dataTask: any, platform?: string) {
 
     const mountBudget = () => {
         return new Promise<boolean>((resolve) => {
-            if (queryRouter.budget !== "selected") {
-                sortBudget(queryRouter.budget)
+            if (queryRouter.value.budget !== "selected") {
+                sortBudget(queryRouter.value.budget)
                 resolve(true)
             } else {
                 resolve(false)

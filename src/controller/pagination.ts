@@ -1,6 +1,12 @@
-import { ref,  } from "vue";
+import { ref, computed } from "vue";
+import { useRouter } from 'vue-router'
+
 
 export default function usePagination(dataTask?: any) {
+
+  const router: any = useRouter()
+
+  const queryRouter = computed(() => router.currentRoute.value.query)
 
   const dataPerPage = ref<number>(3)
 
@@ -12,7 +18,21 @@ export default function usePagination(dataTask?: any) {
     } else { 
         dataTask.sortData  = dataTask.allTasks.slice(start, end)
     }
-  } 
+  }
+  
+  const checkQueryPage = () => {
+    return new Promise<boolean>((resolve) => {
+      if (typeof queryRouter.value.page !== "undefined") {
+        if (queryRouter.value.page !== "") {
+          resolve(true)
+        }
+      } else {
+        resolve(false)
+       }
+    })
+  }
+
+
 
   const paginateStart = ((page: any) => {
     if (currentDataIndex.value == "") {
@@ -48,6 +68,6 @@ export default function usePagination(dataTask?: any) {
 
   
   
-  return { pagination, paginateStart, dataPerPage, currentDataIndex }
+  return { pagination, paginateStart, checkQueryPage,dataPerPage, currentDataIndex }
     
 }
