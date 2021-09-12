@@ -19,15 +19,6 @@ const routes: Array<RouteRecordRaw> = [
       requiresAuth: true,
       requiresUnauth: false
     },
-    children: [
-      {
-        path: '/tasks-search/page/:id',
-        name: "TaskResult",
-        component: () => import('@/views/TasksSearch.vue'),
-     
-      },
-      
-    ]
   },
 
 ]
