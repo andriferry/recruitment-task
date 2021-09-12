@@ -59,11 +59,15 @@
           v-for="data in 3"
           :to="{
             path: $router.currentRoute.value.fullPath,
-            query: { page: data },
+            query: {
+              platform: selectedPlatform,
+              budget: selectedBudget,
+              page: data,
+            },
           }"
           :key="data"
+          v-text="data"
         >
-          {{ data }}
         </router-link>
       </div>
     </div>

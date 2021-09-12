@@ -1,5 +1,6 @@
 import { ref, computed } from "vue";
 import { useRouter } from 'vue-router'
+import useHandleRoute from "@/controller/handleRoute";
 
 
 export default function usePagination(dataTask?: any) {
@@ -8,11 +9,14 @@ export default function usePagination(dataTask?: any) {
 
   const queryRouter = computed(() => router.currentRoute.value.query)
 
+  const {checkAllQuery} = useHandleRoute()
+
   const dataPerPage = ref<number>(3)
 
   const currentDataIndex = ref<string>("")
 
   const pagination = (start: number, end?: number) => {
+   // checkAllQuery()
     if (typeof dataTask.sortData == "undefined") {
         dataTask.task  = dataTask.allTasks.slice(start, end)
     } else { 
