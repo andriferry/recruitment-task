@@ -3,6 +3,8 @@ import { useRouter } from 'vue-router'
 export default function useBudget(dataTask: any, platform?: string) {
     
     const router: any = useRouter()
+
+    const queryRouter = router.currentRoute.value.query;
     
     const formatBudget = (value: number ,currency: string,location: string) => {
         const numberObject = new Number(value);
@@ -52,7 +54,19 @@ export default function useBudget(dataTask: any, platform?: string) {
     }
 
 
-    return {formatBudget, sortBudget }
+    const mountBudget = () => {
+        return new Promise<boolean>((resolve, reject) => {
+            if (queryRouter.budget !== "selected") {
+                sortBudget(queryRouter.budget)
+                resolve(true)
+            } else {
+                resolve(false)
+            }
+        })
+    }
+
+
+    return {formatBudget, sortBudget , mountBudget }
 }
 
 

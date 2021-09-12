@@ -3,6 +3,7 @@ import api from "@/services/api";
 import { reactive, ref , onMounted , computed } from 'vue'
 import usePlatform from '@/controller/platform';
 import usePagination from '@/controller/pagination';
+import useBudget from '@/controller/budget';
 import { useRouter } from "vue-router";
 
 
@@ -24,9 +25,11 @@ export default function dataModel() {
         singleData: undefined
     })
 
-    const { getPlatform , sortPlatform , mountPlatform } = usePlatform(componentTask)
+    const { getPlatform  , mountPlatform } = usePlatform(componentTask)
     
-    const {pagination } = usePagination(componentTask)
+    const {mountBudget} = useBudget(componentTask)
+   
+    const { pagination } = usePagination(componentTask)
 
     const selectedPlatform = ref<string|any>("all")
 
@@ -51,27 +54,45 @@ export default function dataModel() {
             if (Object.keys(queryRouter).length > 0) {
                
                 if (typeof queryRouter.platform !== "undefined") {
-                    if (queryRouter.platform !== "") {
-                        mountPlatform().then(res => {
-                            if (res == true) selectedPlatform.value = queryRouter.platform
-                        })
-                    }
-                } else if (typeof queryRouter.budget !== "undefined") {
-                    if (queryRouter.budget !== "") {
-                        if (queryRouter.budget == "selected") {
-                            // pagination(0, 6)
-                            getPlatform()
-                        } else {
-                            // pagination(0, 6)
-                            getPlatform()
-                            selectedBudget.value = queryRouter.budget
-                            sortPlatform(queryRouter.budget)
-                        }
-                    }         
-                } else {
-                    // pagination(0, 6)
+                    mountPlatform().then(respond => {
+                        if (respond == true) selectedPlatform.value = queryRouter.platform
+                    })
+                }  else {
                     getPlatform()
                 }
+
+                if (typeof queryRouter.budget !== "undefined") {
+                    mountBudget().then(respond => {
+                        if (respond == true) {
+                            getPlatform()
+                            selectedBudget.value = queryRouter.budget
+                        } else {
+                            getPlatform()
+                        }
+
+
+
+                    })
+
+
+                    
+                    
+                    
+                    // if (queryRouter.budget !== "") {
+                    //     if (queryRouter.budget == "selected") {
+
+                    //         getPlatform()
+                    //     } else {
+                    //         getPlatform()
+                    //         selectedBudget.value = queryRouter.budget
+                    //         sortPlatform(queryRouter.budget)
+                    //     }
+                    // }         
+                }
+
+
+
+
                 
             } else {
                 // if (typeof queryRouter.platform !== "undefined") {
@@ -103,7 +124,6 @@ export default function dataModel() {
                 //     getPlatform()
                 // }
 
-                console.log('else')
                 getPlatform()
                 
                 

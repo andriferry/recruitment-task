@@ -42,14 +42,17 @@ export default function usePlatform(dataTask?: any , budget?: string) {
 
 
     const mountPlatform = () => {
-        return new Promise((resolve, reject) => {
-            if (queryRouter.platform !== "all") {
-                getPlatform()
-                sortPlatform(queryRouter.platform)
-                resolve(true)
-            } else {
-                getPlatform
+        return new Promise<boolean>((resolve, reject) => {
+            if (queryRouter.platform !== "") {
+                if (queryRouter.platform !== "all") {
+                    getPlatform()
+                    sortPlatform(queryRouter.platform)
+                    resolve(true)
+                } else {
+                    getPlatform()
+                }
             }
+            
         })
     }
 
