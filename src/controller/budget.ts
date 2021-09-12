@@ -9,7 +9,7 @@ export default function useBudget(dataTask: any, platform?: string) {
     const queryRouter = computed(() => router.currentRoute.value.query)
 
     const {checkQueryPage} = usePagination()
-    //Move to interface
+  
     const formatBudget = (value: number ,currency: string,location: string) => {
         const numberObject = new Number(value);
         const myObj = {
@@ -36,7 +36,7 @@ export default function useBudget(dataTask: any, platform?: string) {
         }
     }
 
-    //move to interface
+  
     const routePush = ((budget: string, page?: number) => {
         router.push({
             path: router.currentRoute.value.fullPath,

@@ -1,9 +1,13 @@
 import { useRouter } from 'vue-router'
+import usePagination from './pagination';
+import { computed } from 'vue';
 
 export default function usePlatform(dataTask?: any , budget?: string) {
     const router: any = useRouter()
 
-    const queryRouter = router.currentRoute.value.query;
+    const queryRouter = computed(() =>router.currentRoute.value.query)
+
+    const {checkQueryPage} = usePagination()
 
     const createdPlatformValue = (platformValue: string) => platformValue.toLowerCase();
 
@@ -11,13 +15,21 @@ export default function usePlatform(dataTask?: any , budget?: string) {
         dataTask.allPlatform.push(...new Set(platform))
     }
 
-    const queryPlatform = (platform: any) => {
+    const routePush = ((platform: string , page?: number) => {
         router.push({
-            path: router.currentRoute.value.fullPath,
+            path: router.currentRoute.value.path,
             query: {
                 platform,
-                budget
+                budget,
+                page
             }
+        })
+    }) 
+
+
+    const queryPlatform = (platform: any) => {
+        checkQueryPage().then(respond => {
+            respond == true  ? routePush(platform, queryRouter.value.page) : routePush(platform)
         })
     }
 
@@ -38,10 +50,10 @@ export default function usePlatform(dataTask?: any , budget?: string) {
 
     const mountPlatform = () => {
         return new Promise<boolean>((resolve) => {
-            if (queryRouter.platform !== "") {
-                if (queryRouter.platform !== "all") {
+            if (queryRouter.value.platform !== "") {
+                if (queryRouter.value.platform !== "all") {
                     getPlatform()
-                    sortPlatform(queryRouter.platform)
+                    sortPlatform(queryRouter.value.platform)
                     resolve(true)
                 } else {
                     getPlatform()
