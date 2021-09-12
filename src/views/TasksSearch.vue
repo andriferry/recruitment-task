@@ -119,7 +119,7 @@
         dataTask,
       } = dataModel();
 
-      const { createdPlatformValue, sortPlatform } = usePlatform(componentTask);
+      const { createdPlatformValue, sortPlatform } = usePlatform(componentTask, selectedBudget.value);
 
       const { formatBudget, sortBudget } = useBudget(componentTask);
 

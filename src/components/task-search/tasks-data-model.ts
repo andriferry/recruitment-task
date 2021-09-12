@@ -8,7 +8,7 @@ import usePagination from '@/controller/pagination';
 
 export default function dataModel() {
 
-    const parameter = reactive<params>({limit: 10});
+    const parameter = reactive<params>({limit: 100});
 
     const componentTask = reactive<allDataComponent>({
         task: undefined,
