@@ -13,14 +13,13 @@ export default function usePagination(dataTask?: any) {
   const currentDataIndex = ref<string>("")
 
   const pagination = (start: number, end?: number) => {
-   // checkAllQuery()
     if (typeof dataTask.sortData == "undefined") {
-        dataTask.task  = dataTask.allTasks.slice(start, end)
-    } else { 
-        dataTask.sortData  = dataTask.allTasks.slice(start, end)
+      dataTask.task = dataTask.allTasks.slice(start, end)
+    } else {
+      dataTask.sortData = dataTask.allTasks.slice(start, end)
     }
   }
-  
+
   const checkQueryPage = () => {
     return new Promise<boolean>((resolve) => {
       if (typeof queryRouter.value.page !== "undefined") {
@@ -29,7 +28,7 @@ export default function usePagination(dataTask?: any) {
         }
       } else {
         resolve(false)
-       }
+      }
     })
   }
 
@@ -61,21 +60,13 @@ export default function usePagination(dataTask?: any) {
           break;
         case '3':
           pagination(6, 9)
-          break;
+          break
       }
     }
- 
+
   })
 
 
-  // const mountPagination = (() => {
-  //   return new Promise<boolean>((resolve, reject) => {
-      
-  //   })
-  // })
+  return { pagination, paginateStart, checkQueryPage, dataPerPage, currentDataIndex }
 
-  
-  
-  return { pagination, paginateStart, checkQueryPage,dataPerPage, currentDataIndex }
-    
 }
