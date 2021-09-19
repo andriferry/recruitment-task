@@ -1,12 +1,11 @@
 import { useRouter } from 'vue-router'
-import usePagination from './pagination'
 import { computed } from 'vue'
+import usePagination from './pagination'
 
 export default function useBudget(dataTask: any) {
   const router: any = useRouter()
 
   const queryRouter = computed(() => router.currentRoute.value.query)
-
   const { checkQueryPage } = usePagination()
 
   const formatBudget = (value: number, currency: string, location: string) => {

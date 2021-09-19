@@ -40,7 +40,7 @@
           <td v-text="data.title"></td>
           <td v-text="data.description"></td>
           <td>
-            {{ formatBudget(data.budget.value, data.budget.currency, "en-US") }}
+            {{ formatBudget(data.budget.value, data.budget.currency, 'en-US') }}
           </td>
           <td v-text="data.proposalCount"></td>
           <td>
@@ -75,110 +75,109 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref, watch } from "vue";
-  import dataModel from "@/components/task-search/tasks-data-model";
-  import usePlatform from "@/controller/platform";
-  import useBudget from "@/controller/budget";
-  import usePagination from "../controller/pagination";
-  import { useRouter } from "vue-router";
+import { defineComponent, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import dataModel from '@/components/task-search/tasks-data-model'
+import usePlatform from '@/controller/platform'
+import useBudget from '@/controller/budget'
+import usePagination from '../controller/pagination'
 
-  export default defineComponent({
-    name: "TasksSearch",
-    setup() {
-      const {
-        selectedBudget,
-        selectedPlatform,
-        componentTask,
-        dataTask,
-      } = dataModel();
-      const router = useRouter();
+export default defineComponent({
+  name: 'TasksSearch',
+  setup() {
+    const {
+      selectedBudget,
+      selectedPlatform,
+      componentTask,
+      dataTask,
+    } = dataModel()
+    const router = useRouter()
 
-      const { createdPlatformValue, sortPlatform } = usePlatform(componentTask);
+    const { createdPlatformValue, sortPlatform } = usePlatform(componentTask)
 
-      const { formatBudget, sortBudget } = useBudget(componentTask);
+    const { formatBudget, sortBudget } = useBudget(componentTask)
 
-      const { paginateStart } = usePagination(componentTask);
+    const { paginateStart } = usePagination(componentTask)
 
-      const table = ref([
-        "Title",
-        "Description",
-        "Budget",
-        "Proposal Count",
-        "Platform",
-        "Added Time",
-      ]);
+    const table = ref([
+      'Title',
+      'Description',
+      'Budget',
+      'Proposal Count',
+      'Platform',
+      'Added Time',
+    ])
 
+    watch(selectedBudget, (budget: string) => {
+      sortBudget(budget, selectedPlatform.value)
+    })
 
-      watch(selectedBudget, (budget: string) => {
-        sortBudget(budget, selectedPlatform.value);
-      });
+    watch(selectedPlatform, (platform: string) => {
+      if (platform !== 'all') {
+        sortPlatform(platform, selectedBudget.value)
+      } else {
+        sortPlatform(platform, selectedBudget.value)
+        componentTask.sortData = undefined
+      }
+    })
 
-      watch(selectedPlatform, (platform: string) => {
-        if (platform !== "all") {
-          sortPlatform(platform, selectedBudget.value);
-        } else {
-          sortPlatform(platform, selectedBudget.value);
-          componentTask.sortData = undefined;
-        }
-      });
+    watch(
+      () => router.currentRoute.value.query,
+      (queryValue) => {
+        paginateStart(queryValue.page)
+      }
+    )
 
-      watch(
-        () => router.currentRoute.value.query,
-        (queryValue) => {
-          paginateStart(queryValue.page);
-        }
-      );
-
-      return {
-        table,
-        selectedBudget,
-        selectedPlatform,
-        componentTask,
-        dataTask,
-        createdPlatformValue,
-        formatBudget,
-      };
-    },
-  });
+    return {
+      table,
+      selectedBudget,
+      selectedPlatform,
+      componentTask,
+      dataTask,
+      createdPlatformValue,
+      formatBudget,
+    }
+  },
+})
 </script>
 
 <style lang="scss">
-  .container {
-    width: 100%;
-    height: 100vh;
-    padding: 100px;
+.container {
+  width: 100%;
+  height: 100vh;
+  padding: 100px;
 
-    .tasks {
-      border-collapse: collapse;
-      width: 100%;
-      tr {
-        border: 1px solid black;
+  .tasks {
+    border-collapse: collapse;
+    width: 100%;
+    tr {
+      border: 1px solid black;
+      padding: 8px;
+      th {
+        background-color: #20ceee;
+        color: white;
+      }
+      th,
+      td {
         padding: 8px;
-        th {
-          background-color: #20ceee;
-          color: white;
-        }
-        th,
-        td {
-          padding: 8px;
-          border-right: 1px solid black;
-        }
-      }
-    }
-    .pagination,
-    .search {
-      display: flex;
-      justify-content: flex-end;
-      padding: 15px 5px;
-      a {
-        margin: 0px 5px;
-      }
-      .input {
-        margin: 0px 5px;
-        label {
-          margin-right: 5px;
-        }
+        border-right: 1px solid black;
       }
     }
   }
+  .pagination,
+  .search {
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px 5px;
+    a {
+      margin: 0px 5px;
+    }
+    .input {
+      margin: 0px 5px;
+      label {
+        margin-right: 5px;
+      }
+    }
+  }
+}
 </style>
