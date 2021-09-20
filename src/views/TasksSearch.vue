@@ -1,6 +1,7 @@
 <template>
   <main>
     <h1>Tasks Search view</h1>
+
     <div class="container">
       <div class="search">
         <div class="input">
@@ -25,9 +26,13 @@
         </div>
         <div class="input">
           <label for="">Search</label>
-          <input v-model="params.keywords" type="text" />
+          <input
+            @keypress.enter="searchByKeyword(params.keywords)"
+            v-model="params.keywords"
+            type="text"
+          />
         </div>
-        <button @click="searchByKeyword">Submit</button>
+        <button @click="searchByKeyword(params.keywords)">Submit</button>
       </div>
 
       <table class="tasks">
@@ -90,15 +95,15 @@ export default defineComponent({
       slicingData,
       allTasks,
     } = useTask()
-    const { queryPlatform } = useHandleRoute()
+    const { queryPlatform, queryKeyword } = useHandleRoute()
     const { formatBudget } = useBudget()
     const { customValuePlatform, sortingByPlatform } = usePlatform()
     const { getTasks } = fetch()
 
-    const searchByKeyword = () => {
+    const searchByKeyword = (keyword: string) => {
       getTasks(params).then((res) => {
         tasks.value = res.data.tasks
-        // console.log()
+        queryKeyword(keyword)
       })
     }
 
