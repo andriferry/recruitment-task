@@ -1,12 +1,11 @@
 <template>
   <main>
     <h1>Tasks Search view</h1>
-    {{ $router.currentRoute.value.fullPath }}
-    <div class="container" v-if="componentTask.task">
+    <div class="container">
       <div class="search">
         <div class="input">
           <label for="">Sort Budget</label>
-          <select v-model="selectedBudget">
+          <select>
             <option value="selected">Selected</option>
             <option value="min">Min</option>
             <option value="max">Max</option>
@@ -14,19 +13,15 @@
         </div>
         <div class="input">
           <label for="">Platform</label>
-          <select v-model="selectedPlatform">
-            <option
-              v-for="(platform, index) in componentTask.allPlatform"
-              :key="index"
-              v-text="platform"
-              :value="createdPlatformValue(platform)"
-            ></option>
+          <select>
+            <option>all</option>
           </select>
         </div>
         <div class="input">
           <label for="">Search</label>
           <input type="text" />
         </div>
+        <button>Submit</button>
       </div>
 
       <table class="tasks">
@@ -36,69 +31,37 @@
           </th>
         </tr>
 
-        <tr v-for="(data, index) in dataTask" :key="index">
-          <td v-text="data.title"></td>
-          <td v-text="data.description"></td>
+        <tr>
+          <td v-text="'data.title'"></td>
+          <td v-text="'data.description'"></td>
           <td>
-            {{ formatBudget(data.budget.value, data.budget.currency, 'en-US') }}
+            Budget
           </td>
-          <td v-text="data.proposalCount"></td>
+          <td v-text="'data.proposalCount'"></td>
           <td>
             <ul>
-              <li v-for="(platforms, index) in data.platforms" :key="index">
-                {{ platforms }}
+              <li>
+                platform
               </li>
             </ul>
           </td>
-          <td v-text="data.addedTime"></td>
+          <td v-text="'data.addedTime'"></td>
         </tr>
       </table>
 
       <div class="pagination">
-        <router-link
-          v-for="data in 3"
-          :to="{
-            path: $router.currentRoute.value.fullPath,
-            query: {
-              platform: selectedPlatform,
-              budget: selectedBudget,
-              page: data,
-            },
-          }"
-          :key="data"
-          v-text="data"
-        >
-        </router-link>
+        thi is pagination
       </div>
     </div>
   </main>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
-import dataModel from '@/components/task-search/tasks-data-model'
-import usePlatform from '@/controller/platform'
-import useBudget from '@/controller/budget'
-import usePagination from '../controller/pagination'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'TasksSearch',
   setup() {
-    const {
-      selectedBudget,
-      selectedPlatform,
-      componentTask,
-      dataTask,
-    } = dataModel()
-    const router = useRouter()
-
-    const { createdPlatformValue, sortPlatform } = usePlatform(componentTask)
-
-    const { formatBudget, sortBudget } = useBudget(componentTask)
-
-    const { paginateStart } = usePagination(componentTask)
-
     const table = ref([
       'Title',
       'Description',
@@ -108,34 +71,8 @@ export default defineComponent({
       'Added Time',
     ])
 
-    watch(selectedBudget, (budget: string) => {
-      sortBudget(budget, selectedPlatform.value)
-    })
-
-    watch(selectedPlatform, (platform: string) => {
-      if (platform !== 'all') {
-        sortPlatform(platform, selectedBudget.value)
-      } else {
-        sortPlatform(platform, selectedBudget.value)
-        componentTask.sortData = undefined
-      }
-    })
-
-    watch(
-      () => router.currentRoute.value.query,
-      (queryValue) => {
-        paginateStart(queryValue.page)
-      }
-    )
-
     return {
       table,
-      selectedBudget,
-      selectedPlatform,
-      componentTask,
-      dataTask,
-      createdPlatformValue,
-      formatBudget,
     }
   },
 })
