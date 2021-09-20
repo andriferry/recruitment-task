@@ -27,7 +27,7 @@
           <label for="">Search</label>
           <input v-model="params.keywords" type="text" />
         </div>
-        <button>Submit</button>
+        <button @click="searchByKeyword">Submit</button>
       </div>
 
       <table class="tasks">
@@ -68,6 +68,7 @@ import useTask from '@/components/task-search/tasks-data-model'
 import useBudget from '@/controller/budget'
 import usePlatform from '@/controller/platforms'
 import useHandleRoute from '@/controller/handle-routes'
+import fetch from '@/components/task-search/get-taks'
 
 export default defineComponent({
   name: 'TasksSearch',
@@ -92,6 +93,14 @@ export default defineComponent({
     const { queryPlatform } = useHandleRoute()
     const { formatBudget } = useBudget()
     const { customValuePlatform, sortingByPlatform } = usePlatform()
+    const { getTasks } = fetch()
+
+    const searchByKeyword = () => {
+      getTasks(params).then((res) => {
+        tasks.value = res.data.tasks
+        // console.log()
+      })
+    }
 
     watch(selectedPlatform, (value: string) => {
       if (value == 'other') {
@@ -110,6 +119,7 @@ export default defineComponent({
       tasks,
       allPlatforms,
       selectedPlatform,
+      searchByKeyword,
       formatBudget,
       customValuePlatform,
     }

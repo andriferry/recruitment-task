@@ -7,5 +7,9 @@ export default function useHandleRoute() {
     router.push({ path: '/tasks-search', query: { platform } })
   }
 
+  const queryKeyword = (keyword: string) => {
+    console.log(keyword)
+  }
+
   return { queryPlatform }
 }
