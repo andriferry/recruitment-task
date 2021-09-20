@@ -56,7 +56,7 @@
               </li>
             </ul>
           </td>
-          <td v-text="data.addedTime"></td>
+          <td>{{ dateFormat(data.addedTime) }}</td>
         </tr>
       </table>
 
@@ -107,6 +107,20 @@ export default defineComponent({
       })
     }
 
+    const dateFormat = (value: string) => {
+      const date = new Date(value)
+
+      const deltaDay = (date.getTime() - Date.now()) / (1000 * 3600 * 24)
+
+      const formatter = new Intl.RelativeTimeFormat('en', { style: 'narrow' })
+
+      const result = formatter.format(Math.round(deltaDay), 'days')
+
+      console.log(result)
+
+      return result
+    }
+
     watch(selectedPlatform, (value: string) => {
       if (value == 'other') {
         slicingData(allTasks.value)
@@ -127,6 +141,7 @@ export default defineComponent({
       searchByKeyword,
       formatBudget,
       customValuePlatform,
+      dateFormat,
     }
   },
 })
