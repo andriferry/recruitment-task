@@ -116,8 +116,6 @@ export default defineComponent({
 
       const result = formatter.format(Math.round(deltaDay), 'days')
 
-      console.log(result)
-
       return result
     }
 
