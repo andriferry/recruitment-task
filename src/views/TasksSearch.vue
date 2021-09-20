@@ -74,11 +74,13 @@ export default defineComponent({
       'Added Time',
     ])
     const { params, tasks } = useTask()
+    const { formatBudget } = useBudget()
 
     return {
       table,
       params,
       tasks,
+      formatBudget,
     }
   },
 })

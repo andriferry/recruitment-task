@@ -5,6 +5,7 @@ export default function useBudget() {
       style: 'currency',
       currency: currency,
     }
+    return numberObject.toLocaleString(location, myObj)
   }
 
   return { formatBudget }
