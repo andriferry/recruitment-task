@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
+import { defineComponent, ref } from 'vue'
 import useTask from '@/components/task-search/tasks-data-model'
 import useBudget from '@/controller/budget'
 import usePlatform from '@/controller/platforms'
@@ -80,15 +80,9 @@ export default defineComponent({
       'Platform',
       'Added Time',
     ])
-    const { params, tasks, allPlatforms } = useTask()
+    const { params, tasks, allPlatforms, selectedPlatform } = useTask()
     const { formatBudget } = useBudget()
     const { customValuePlatform } = usePlatform()
-
-    const selectedPlatform = ref('other')
-
-    watch(selectedPlatform, (value) => {
-      console.log(value)
-    })
 
     return {
       table,
