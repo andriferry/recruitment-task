@@ -13,7 +13,7 @@
         </div>
         <div class="input">
           <label for="">Platform</label>
-          <select v-model="params.platforms">
+          <select>
             <option>all</option>
           </select>
         </div>
@@ -31,21 +31,21 @@
           </th>
         </tr>
 
-        <tr>
-          <td v-text="'data.title'"></td>
-          <td v-text="'data.description'"></td>
+        <tr v-for="(data, index) in tasks" :key="index">
+          <td v-text="data.title"></td>
+          <td v-text="data.description"></td>
           <td>
             Budget
           </td>
-          <td v-text="'data.proposalCount'"></td>
+          <td v-text="data.proposalCount"></td>
           <td>
             <ul>
-              <li>
-                platform
+              <li v-for="(data, index) in data.platforms" :key="index">
+                {{ data }}
               </li>
             </ul>
           </td>
-          <td v-text="'data.addedTime'"></td>
+          <td v-text="data.addedTime"></td>
         </tr>
       </table>
 
@@ -57,9 +57,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref } from 'vue'
 import useTask from '@/components/task-search/tasks-data-model'
-import fetch from '@/components/task-search/get-taks'
 
 export default defineComponent({
   name: 'TasksSearch',
@@ -73,21 +72,12 @@ export default defineComponent({
       'Platform',
       'Added Time',
     ])
-
-    const { getTasks } = fetch()
-
-    const { params } = useTask()
-
-    onMounted(() => {
-      console.log(params)
-      getTasks(params).then((res) => {
-        console.log(res)
-      })
-    })
+    const { params, tasks } = useTask()
 
     return {
       table,
       params,
+      tasks,
     }
   },
 })
