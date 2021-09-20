@@ -4,22 +4,22 @@
     <div class="container">
       <div class="search">
         <div class="input">
-          <label for="">Sort Budget</label>
-          <select>
-            <option value="selected">Selected</option>
-            <option value="min">Min</option>
-            <option value="max">Max</option>
-          </select>
+          <label for="">Greater Budget</label>
+          <input v-model="params.budgetGreaterEqual" type="text" />
+        </div>
+        <div class="input">
+          <label for="">Budget Lower</label>
+          <input v-model="params.budgetLowerEqual" type="text" />
         </div>
         <div class="input">
           <label for="">Platform</label>
-          <select>
+          <select v-model="params.platforms">
             <option>all</option>
           </select>
         </div>
         <div class="input">
           <label for="">Search</label>
-          <input type="text" />
+          <input v-model="params.keywords" type="text" />
         </div>
         <button>Submit</button>
       </div>
@@ -74,17 +74,20 @@ export default defineComponent({
       'Added Time',
     ])
 
-    const getTasks = fetch()
+    const { getTasks } = fetch()
 
-    const params = useTask()
+    const { params } = useTask()
 
     onMounted(() => {
       console.log(params)
-      console.log(getTasks)
+      getTasks(params).then((res) => {
+        console.log(res)
+      })
     })
 
     return {
       table,
+      params,
     }
   },
 })
