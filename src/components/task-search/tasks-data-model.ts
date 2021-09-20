@@ -5,10 +5,8 @@ import usePlatform from '@/controller/platforms'
 
 export default function useTask() {
   const { getTasks } = fetch()
-  const { getPlatform, sortingByPlatform } = usePlatform()
-  const params = reactive<ParamsData>({
-    limit: 6,
-  })
+  const { getPlatform } = usePlatform()
+  const params = reactive<ParamsData>({ limit: 6 })
   const allTasks = ref()
   const tasks = ref()
   const allPlatforms = ref(['OTHER'])
@@ -17,16 +15,6 @@ export default function useTask() {
   const slicingData = (dataTask: [string]) => {
     tasks.value = dataTask.slice(0, 3)
   }
-
-  watch(selectedPlatform, (value: string) => {
-    if (value == 'other') {
-      slicingData(allTasks.value)
-    } else {
-      sortingByPlatform(params.limit, value.toUpperCase()).then((res) => {
-        slicingData(res.data.tasks)
-      })
-    }
-  })
 
   onMounted(() => {
     getTasks(params).then((res) => {
@@ -37,5 +25,12 @@ export default function useTask() {
     })
   })
 
-  return { params, tasks, allPlatforms, selectedPlatform }
+  return {
+    params,
+    tasks,
+    allTasks,
+    allPlatforms,
+    selectedPlatform,
+    slicingData,
+  }
 }

@@ -63,10 +63,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import useTask from '@/components/task-search/tasks-data-model'
 import useBudget from '@/controller/budget'
 import usePlatform from '@/controller/platforms'
+import useHandleRoute from '@/controller/handle-routes'
 
 export default defineComponent({
   name: 'TasksSearch',
@@ -80,9 +81,28 @@ export default defineComponent({
       'Platform',
       'Added Time',
     ])
-    const { params, tasks, allPlatforms, selectedPlatform } = useTask()
+    const {
+      params,
+      tasks,
+      allPlatforms,
+      selectedPlatform,
+      slicingData,
+      allTasks,
+    } = useTask()
+    const { queryPlatform } = useHandleRoute()
     const { formatBudget } = useBudget()
-    const { customValuePlatform } = usePlatform()
+    const { customValuePlatform, sortingByPlatform } = usePlatform()
+
+    watch(selectedPlatform, (value: string) => {
+      if (value == 'other') {
+        slicingData(allTasks.value)
+      } else {
+        queryPlatform(value)
+        sortingByPlatform(params.limit, value.toUpperCase()).then((res) => {
+          slicingData(res.data.tasks)
+        })
+      }
+    })
 
     return {
       table,
