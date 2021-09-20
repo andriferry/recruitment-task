@@ -14,7 +14,9 @@
         <div class="input">
           <label for="">Platform</label>
           <select>
-            <option>all</option>
+            <option v-for="(data, index) in allPlatforms" :key="index">{{
+              data
+            }}</option>
           </select>
         </div>
         <div class="input">
@@ -73,13 +75,14 @@ export default defineComponent({
       'Platform',
       'Added Time',
     ])
-    const { params, tasks } = useTask()
+    const { params, tasks, allPlatforms } = useTask()
     const { formatBudget } = useBudget()
 
     return {
       table,
       params,
       tasks,
+      allPlatforms,
       formatBudget,
     }
   },
