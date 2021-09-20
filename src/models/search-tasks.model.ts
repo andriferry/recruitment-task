@@ -2,9 +2,9 @@ export interface ParamsData {
   limit: number
   platforms?: string
   keywords?: string
-  budgetGreaterEqual?: number
-  budgetLowerEqual?: number
+  budgetGreaterEqual?: number | undefined
+  budgetLowerEqual?: number | undefined
   olderThanId?: string
   newerThanId?: string
-  skip?: number
+  skip?: number | undefined
 }

@@ -57,10 +57,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
+import useTask from '@/components/task-search/tasks-data-model'
+import fetch from '@/components/task-search/get-taks'
 
 export default defineComponent({
   name: 'TasksSearch',
+
   setup() {
     const table = ref([
       'Title',
@@ -70,6 +73,15 @@ export default defineComponent({
       'Platform',
       'Added Time',
     ])
+
+    const getTasks = fetch()
+
+    const params = useTask()
+
+    onMounted(() => {
+      console.log(params)
+      console.log(getTasks)
+    })
 
     return {
       table,
