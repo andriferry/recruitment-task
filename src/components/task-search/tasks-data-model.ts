@@ -5,17 +5,20 @@ import fetch from '@/components/task-search/get-taks'
 export default function useTask() {
   const { getTasks } = fetch()
   const params = reactive<ParamsData>({
-    limit: 100,
+    limit: 6,
   })
   const allTasks = ref()
   const tasks = ref()
   const allPlatforms = ref(['OTHER'])
 
   const removeDuplicatePlatform = () => {
-    const platforms = allTasks.value
-      .map((element: any) => element.platforms)
-      .flat()
-    
+    const getDataPlatform = allTasks.value.map((element: any) =>
+      element.platforms.flat()
+    )
+    console.log(getDataPlatform.flat())
+
+
+  
   }
 
   onMounted(() => {
