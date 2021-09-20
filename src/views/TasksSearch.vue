@@ -35,7 +35,7 @@
           <td v-text="data.title"></td>
           <td v-text="data.description"></td>
           <td>
-            Budget
+            {{ formatBudget(data.budget.value, data.budget.currency, 'en-US') }}
           </td>
           <td v-text="data.proposalCount"></td>
           <td>
@@ -59,6 +59,7 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import useTask from '@/components/task-search/tasks-data-model'
+import useBudget from '@/controller/budget'
 
 export default defineComponent({
   name: 'TasksSearch',

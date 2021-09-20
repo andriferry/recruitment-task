@@ -7,9 +7,7 @@ export default function useTask() {
   const params = reactive<ParamsData>({
     limit: 6,
   })
-
   const allTasks = ref()
-
   const tasks = ref()
 
   onMounted(() => {
@@ -17,8 +15,6 @@ export default function useTask() {
       allTasks.value = res.data.tasks
       tasks.value = res.data.tasks.slice(0, 3)
     })
-
-    console.log('log')
   })
 
   return { params, tasks }
