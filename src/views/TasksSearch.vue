@@ -13,10 +13,14 @@
         </div>
         <div class="input">
           <label for="">Platform</label>
-          <select>
-            <option v-for="(data, index) in allPlatforms" :key="index">{{
-              data
-            }}</option>
+          <select v-model="selectedPlatform">
+            <option
+              v-for="(data, index) in allPlatforms"
+              :key="index"
+              :value="customValuePlatform(data)"
+            >
+              {{ data }}
+            </option>
           </select>
         </div>
         <div class="input">
@@ -59,9 +63,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import useTask from '@/components/task-search/tasks-data-model'
 import useBudget from '@/controller/budget'
+import usePlatform from '@/controller/platforms'
 
 export default defineComponent({
   name: 'TasksSearch',
@@ -77,13 +82,22 @@ export default defineComponent({
     ])
     const { params, tasks, allPlatforms } = useTask()
     const { formatBudget } = useBudget()
+    const { customValuePlatform } = usePlatform()
+
+    const selectedPlatform = ref('other')
+
+    watch(selectedPlatform, (value) => {
+      console.log(value)
+    })
 
     return {
       table,
       params,
       tasks,
       allPlatforms,
+      selectedPlatform,
       formatBudget,
+      customValuePlatform,
     }
   },
 })

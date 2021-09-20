@@ -1,4 +1,6 @@
 export default function usePlatform() {
+  const customValuePlatform = (value: string) => value.toLowerCase()
+
   const removeDuplicatePlatform = (allPlatforms: any, platform: [string]) => {
     allPlatforms.push(...new Set(platform))
   }
@@ -11,5 +13,5 @@ export default function usePlatform() {
     removeDuplicatePlatform(allPlatforms, getDataPlatform.flat())
   }
 
-  return { getPlatform }
+  return { getPlatform, customValuePlatform }
 }
