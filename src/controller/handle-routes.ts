@@ -8,9 +8,13 @@ export default function useHandleRoute() {
     router.push({ path: pathLocation, query: { platform } })
   }
 
+  const queryGreaterBudget = (greaterBudget: number) => {
+    router.push({ path: pathLocation, query: { greaterBudget } })
+  }
+
   const queryKeyword = (keyword: string) => {
     router.push({ path: pathLocation, query: { keyword } })
   }
 
-  return { queryPlatform, queryKeyword }
+  return { queryPlatform, queryKeyword, queryGreaterBudget }
 }

@@ -6,7 +6,11 @@
       <div class="search">
         <div class="input">
           <label for="">Greater Budget</label>
-          <input v-model="params.budgetGreaterEqual" type="text" />
+          <input
+            @keypress.enter="getGreaterBudget(params.budgetGreaterEqual)"
+            v-model="params.budgetGreaterEqual"
+            type="text"
+          />
         </div>
         <button @click="getGreaterBudget(params.budgetGreaterEqual)">
           Submit
@@ -100,8 +104,8 @@ export default defineComponent({
       allTasks,
       dateFormat,
     } = useTask()
-    const { queryPlatform, queryKeyword } = useHandleRoute()
-    const { formatBudget, queryGreaterBudget } = useBudget()
+    const { queryPlatform, queryKeyword, queryGreaterBudget } = useHandleRoute()
+    const { formatBudget, sortGreaterBudget } = useBudget()
     const { customValuePlatform, sortingByPlatform } = usePlatform()
     const { getTasks } = fetch()
 
@@ -120,7 +124,8 @@ export default defineComponent({
       if (typeof budget == 'undefined') {
         backToDefault()
       } else {
-        queryGreaterBudget(params.limit, budget).then((res) => {
+        queryGreaterBudget(budget)
+        sortGreaterBudget(params.limit, budget).then((res) => {
           slicingData(res.data.tasks)
         })
       }
