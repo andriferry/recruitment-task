@@ -12,9 +12,11 @@ export default function useBudget() {
     return numberObject.toLocaleString(location, myObj)
   }
 
+  const sortBudgetLower = (limit: number, budget: number) =>
+    getTasks({ limit: limit, budgetLowerEqual: budget })
 
   const sortGreaterBudget = (limit: number, budget: number) =>
     getTasks({ limit: limit, budgetGreaterEqual: budget })
 
-  return { formatBudget, sortGreaterBudget }
+  return { formatBudget, sortGreaterBudget , sortBudgetLower }
 }

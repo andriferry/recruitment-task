@@ -17,8 +17,14 @@
         </button>
         <div class="input">
           <label for="">Budget Lower</label>
-          <input v-model="params.budgetLowerEqual" type="text" />
-          <button>Submit</button>
+          <input
+            @keypress.enter="getLowerBudget(params.budgetLowerEqual)"
+            v-model="params.budgetLowerEqual"
+            type="text"
+          />
+          <button @click="getLowerBudget(params.budgetLowerEqual)">
+            Submit
+          </button>
         </div>
         <div class="input">
           <label for="">Platform</label>
@@ -104,8 +110,13 @@ export default defineComponent({
       allTasks,
       dateFormat,
     } = useTask()
-    const { queryPlatform, queryKeyword, queryGreaterBudget } = useHandleRoute()
-    const { formatBudget, sortGreaterBudget } = useBudget()
+    const {
+      queryPlatform,
+      queryKeyword,
+      queryGreaterBudget,
+      queryLowerBudget,
+    } = useHandleRoute()
+    const { formatBudget, sortGreaterBudget, sortBudgetLower } = useBudget()
     const { customValuePlatform, sortingByPlatform } = usePlatform()
     const { getTasks } = fetch()
 
@@ -126,6 +137,17 @@ export default defineComponent({
       } else {
         queryGreaterBudget(budget)
         sortGreaterBudget(params.limit, budget).then((res) => {
+          slicingData(res.data.tasks)
+        })
+      }
+    }
+
+    const getLowerBudget = (budget: number) => {
+      if (typeof budget == undefined) {
+        backToDefault()
+      } else {
+        queryLowerBudget(budget)
+        sortBudgetLower(params.limit, budget).then((res) => {
           slicingData(res.data.tasks)
         })
       }
@@ -153,6 +175,7 @@ export default defineComponent({
       customValuePlatform,
       dateFormat,
       getGreaterBudget,
+      getLowerBudget,
     }
   },
 })
