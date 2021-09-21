@@ -8,9 +8,13 @@
           <label for="">Greater Budget</label>
           <input v-model="params.budgetGreaterEqual" type="text" />
         </div>
+        <button @click="getGreaterBudget(params.budgetGreaterEqual)">
+          Submit
+        </button>
         <div class="input">
           <label for="">Budget Lower</label>
           <input v-model="params.budgetLowerEqual" type="text" />
+          <button>Submit</button>
         </div>
         <div class="input">
           <label for="">Platform</label>
@@ -97,7 +101,7 @@ export default defineComponent({
       dateFormat,
     } = useTask()
     const { queryPlatform, queryKeyword } = useHandleRoute()
-    const { formatBudget } = useBudget()
+    const { formatBudget, queryGreaterBudget } = useBudget()
     const { customValuePlatform, sortingByPlatform } = usePlatform()
     const { getTasks } = fetch()
 
@@ -108,9 +112,23 @@ export default defineComponent({
       })
     }
 
+    const backToDefault = () => {
+      slicingData(allTasks.value)
+    }
+
+    const getGreaterBudget = (budget: number) => {
+      if (typeof budget == 'undefined') {
+        backToDefault()
+      } else {
+        queryGreaterBudget(params.limit, budget).then((res) => {
+          slicingData(res.data.tasks)
+        })
+      }
+    }
+
     watch(selectedPlatform, (value: string) => {
       if (value == 'other') {
-        slicingData(allTasks.value)
+        backToDefault()
       } else {
         queryPlatform(value)
         sortingByPlatform(params.limit, value.toUpperCase()).then((res) => {
@@ -129,6 +147,7 @@ export default defineComponent({
       formatBudget,
       customValuePlatform,
       dateFormat,
+      getGreaterBudget,
     }
   },
 })
