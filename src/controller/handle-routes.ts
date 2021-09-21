@@ -16,16 +16,18 @@ export default function useHandleRoute() {
     })
   }
 
+  const oneQuery = (query: any) => {
+    router.push({ path: pathLocation, query: { query } })
+  }
+
+  const newQuery = (target: any, source: any) => {
+    router.push({ path: pathLocation, query: Object.assign(target, source) })
+  }
+
   const queryPlatform = (platform: string) => {
     existingQuery().then((res) => {
-      //  console.log(res)
-      if (res !== false) {
-        console.log(res)
-        router.push({
-          path: pathLocation,
-          query: Object.assign({ platform: platform }, res),
-        })
-      }
+      console.log(res)
+      res !== false ? newQuery({ platform: platform }, res) : oneQuery(platform)
     })
   }
 
