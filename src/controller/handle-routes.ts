@@ -1,16 +1,32 @@
 import { useRouter } from 'vue-router'
-import { onMounted } from 'vue'
+//import { onMounted } from 'vue'
 
 export default function useHandleRoute() {
   const router = useRouter()
   const pathLocation = router.currentRoute.value.path
+  const allQuery = router.currentRoute.value.query
 
   const existingQuery = () => {
-    console.log('Jell')
+    return new Promise((resolve) => {
+      if (Object.keys(allQuery).length > 0) {
+        resolve(allQuery)
+      } else {
+        resolve(false)
+      }
+    })
   }
 
   const queryPlatform = (platform: string) => {
-    router.push({ path: pathLocation, query: { platform } })
+    existingQuery().then((res) => {
+      //  console.log(res)
+      if (res !== false) {
+        console.log(res)
+        router.push({
+          path: pathLocation,
+          query: Object.assign({ platform: platform }, res),
+        })
+      }
+    })
   }
 
   const queryGreaterBudget = (greaterBudget: number) => {
@@ -24,19 +40,6 @@ export default function useHandleRoute() {
   const queryKeyword = (keyword: string) => {
     router.push({ path: pathLocation, query: { keyword } })
   }
-
-  onMounted(() => {
-    console.log(router.currentRoute.value.query)
-
-    const get = router.currentRoute.value.query
-
-    for (const key in get) {
-      if (Object.prototype.hasOwnProperty.call(get, key)) {
-        const element = get[key]
-        console.log(element)
-      }
-    }
-  })
 
   return { queryPlatform, queryKeyword, queryGreaterBudget, queryLowerBudget }
 }
