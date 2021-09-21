@@ -1,34 +1,28 @@
 import { useRouter } from 'vue-router'
-//import { onMounted } from 'vue'
+import { computed } from 'vue'
 
 export default function useHandleRoute() {
   const router = useRouter()
   const pathLocation = router.currentRoute.value.path
-  const allQuery = router.currentRoute.value.query
 
-  const existingQuery = () => {
-    return new Promise((resolve) => {
-      if (Object.keys(allQuery).length > 0) {
-        resolve(allQuery)
-      } else {
-        resolve(false)
-      }
-    })
-  }
+  const allQuery = computed(() => router.currentRoute.value.query)
 
-  const oneQuery = (query: any) => {
-    router.push({ path: pathLocation, query: { query } })
-  }
-
-  const newQuery = (target: any, source: any) => {
-    router.push({ path: pathLocation, query: Object.assign(target, source) })
-  }
+  // const existingQuery = () => {
+  //   return new Promise<any>((resolve) => {
+  //     if (Object.keys(allQuery.value).length > 0) {
+  //       resolve(allQuery.value)
+  //     } else {
+  //       resolve(false)
+  //     }
+  //   })
+  // }
 
   const queryPlatform = (platform: string) => {
-    existingQuery().then((res) => {
-      console.log(res)
-      res !== false ? newQuery({ platform: platform }, res) : oneQuery(platform)
-    })
+    if (Object.keys(allQuery.value).length > 1) {
+      console.log(allQuery.value)
+    } else {
+      router.push({ path: pathLocation, query: { platform } })
+    }
   }
 
   const queryGreaterBudget = (greaterBudget: number) => {
