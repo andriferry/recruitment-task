@@ -22,10 +22,10 @@
             v-model="params.budgetLowerEqual"
             type="text"
           />
-          <button @click="getLowerBudget(params.budgetLowerEqual)">
-            Submit
-          </button>
         </div>
+        <button @click="getLowerBudget(params.budgetLowerEqual)">
+          Submit
+        </button>
         <div class="input">
           <label for="">Platform</label>
           <select v-model="selectedPlatform">
