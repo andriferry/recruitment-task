@@ -94,6 +94,7 @@ export default defineComponent({
       selectedPlatform,
       slicingData,
       allTasks,
+      dateFormat,
     } = useTask()
     const { queryPlatform, queryKeyword } = useHandleRoute()
     const { formatBudget } = useBudget()
@@ -105,18 +106,6 @@ export default defineComponent({
         tasks.value = res.data.tasks
         queryKeyword(keyword)
       })
-    }
-
-    const dateFormat = (value: string) => {
-      const date = new Date(value)
-
-      const deltaDay = (date.getTime() - Date.now()) / (1000 * 3600 * 24)
-
-      const formatter = new Intl.RelativeTimeFormat('en', { style: 'narrow' })
-
-      const result = formatter.format(Math.round(deltaDay), 'days')
-
-      return result
     }
 
     watch(selectedPlatform, (value: string) => {

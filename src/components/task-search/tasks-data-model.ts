@@ -1,4 +1,4 @@
-import { reactive, onMounted, ref, watch } from 'vue'
+import { reactive, onMounted, ref } from 'vue'
 import { ParamsData } from '@/models/search-tasks.model'
 import fetch from '@/components/task-search/get-taks'
 import usePlatform from '@/controller/platforms'
@@ -14,6 +14,15 @@ export default function useTask() {
 
   const slicingData = (dataTask: [string]) => {
     tasks.value = dataTask.slice(0, 3)
+  }
+
+  const dateFormat = (value: number) => {
+    const dataDate = new Date(value)
+    const currentDate = new Date()
+
+    const getDate = currentDate.getDate() - dataDate.getDate()
+
+    return `${getDate} days ago`
   }
 
   onMounted(() => {
@@ -32,5 +41,6 @@ export default function useTask() {
     allPlatforms,
     selectedPlatform,
     slicingData,
+    dateFormat,
   }
 }
